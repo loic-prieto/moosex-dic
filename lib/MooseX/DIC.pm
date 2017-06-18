@@ -1,4 +1,4 @@
-package MooseX::DIC;
+	package MooseX::DIC;
 
 1;
 
