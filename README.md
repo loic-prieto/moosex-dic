@@ -322,7 +322,7 @@ has service => ( is => 'ro', does => 'ServiceRole', qualifiers => [], inject );
 Sometimes, we want the wiring of services to depend on a runtime environment. To this end, we use the concept of
 environments.
 
-By default (that is, if no environment is declared by an C<Injectable> service) all services live inside the 'default'
+By default (that is, if no environment is declared by an *Injectable* service) all services live inside the 'default'
 environment. But we can do more. Let's consider the following services:
 
 ```perl
