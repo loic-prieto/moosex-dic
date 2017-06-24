@@ -1,4 +1,4 @@
-package Container;
+package MooseX::DIC::Container;
 
 use Moose::Role;
 

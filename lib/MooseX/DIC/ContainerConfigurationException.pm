@@ -1,4 +1,4 @@
-package ContainerConfigurationException;
+package MooseX::DIC::ContainerConfigurationException;
 
 use Moose;
 with 'Throwable';

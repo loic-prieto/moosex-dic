@@ -1,4 +1,4 @@
-package ContainerImpl;
+package MooseX::DIC::Container::DefaultImpl;
 
 use MooseX::DIC::Types;
 use List::Util 'reduce';
