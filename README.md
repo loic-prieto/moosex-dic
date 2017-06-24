@@ -12,7 +12,7 @@ of dependencies via constructor by class type (ideally by Role/Interface).
 The configuration is performed by the use of [Marker roles](https://en.wikipedia.org/wiki/Marker_interface_pattern) and
 a specific trait on attributes that have to be injected.
 
-One of the principal tenets of the library is that while code may be poluted by the use of DIC roles and traits, it
+One of the principal tenets of the library is that while code may be polluted by the use of DIC roles and traits, it
 should work without a running container. The classes are fully functional without the dependency injection, the library
 is just a convenient way to wire dependencies (this is mainly accomplished by forbidding non [constructor injection](https://en.wikipedia.org/wiki/Dependency_injection#Constructor_injection)).
 
@@ -82,9 +82,6 @@ syntactic sugar if you only use the Injected trait.
 
 # Starting the Container
 
-The container is a singleton for the running process. It is shared between all Moose classes. This makes it inherently
-unsafe to use in threads, specially if you're registering new mappings on runtime.
-
 When starting your application, the container must be launched to start it's scanning. All packages under the libpath
 will be scanned, which means all packages under the libpath will be loaded. Take this into account for the memory
 consumption of the program and the starting time delay. You can specify which folders to scan instead of the whole
@@ -98,13 +95,15 @@ To start the container:
 use strict;
 use warning;
 
-use MooseX::DIC 'start_container';
+use MooseX::DIC::Container;
 use MyApp::Launcher;
 
 # This may take some seconds
-start_container;
+my $container = MooseX::DIC::Container->new( scan_paths => [ 'lib' ] );
 
-my $app = MyApp::Launcher->new;
+# The launcher is a fully injected service, with all dependencies
+# provided by the container.
+my $app = $container->get_service 'MyApp::Launcher';
 $app->start;
 
 exit 0;
@@ -216,7 +215,7 @@ possible).
 Sometimes, we want a Role/Interface to be implemented by many classes and to let the caller specify which one it wants.
 
 While this would seem to oppose the very idea of letting a container to give you objects, in fact it doesn't, and gives
-a great deal of flexibility while still allowing the container to choose the best implementator for your caller and
+a great deal of flexibility while still allowing the container to choose the best implementation for your caller and
 initialize it.
 
 Qualifiers let a service specify with a more fine-grained precision how they implement an interface, so that callers can
@@ -371,16 +370,14 @@ will depend on which environment we launch the container in, as in:
 use strict;
 use warning;
 
-use MooseX::DIC;
+use MooseX::DIC::Container;
 use MyApp::UserController;
 
-start_container( environment => 'test' );
-
-$user = { name => 'loic', email => 'loic.sephiroth@gmail.com' };
+my $container = MooseX::DIC::Container->new( environment => 'test' );
 
 # In the test environment, the UserController class will have received
 # The InMemory user repository.
-my $user_controller = MyApp::UserController->new;
+my $user_controller = $container->get_service 'MyApp::UserController'
 ```
 
 When the container doesn't find a service in a given environment, it will fall back to the default environment. If it

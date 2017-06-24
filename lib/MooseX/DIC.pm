@@ -84,9 +84,6 @@ syntactic sugar if you only use the Injected trait.
 
 =head1 Starting the Container
 
-The container is a singleton for the running process. It is shared between all Moose classes. This makes it inherently
-unsafe to use in threads, specially if you're registering new mappings on runtime.
-
 When starting your application, the container must be launched to start it's scanning. All packages under the libpath
 will be scanned, which means all packages under the libpath will be loaded. Take this into account for the memory
 consumption of the program and the starting time delay. You can specify which folders to scan instead of the whole
@@ -99,13 +96,15 @@ To start the container:
 	use strict;
 	use warning;
 
-	use MooseX::DIC 'start_container';
+	use MooseX::DIC::Container;
 	use MyApp::Launcher;
 	
 	# This may take some seconds
-	start_container;
+	my $container = MooseX::DIC::Container->new;
 	
-	my $app = MyApp::Launcher->new;
+	# The app launcher is a fully injected service, with
+	# all dependencies provided by the container recursively.
+	my $app = $container->get_service 'MyApp::Launcher';
 	$app->start;
 
 	exit 0;
@@ -395,16 +394,14 @@ will depend on which environment we launch the container in, as in:
     use strict;
     use warning;
 
-    use MooseX::DIC;
-    use MyApp::UserController;
+	use MooseX::DIC::Container;
+	use MyApp::UserController;
 
-    start_container( environment => 'test' );
+	my $container = MooseX::DIC::Container->new( environment => 'test' );
 
-    $user = { name => 'loic', email => 'loic.sephiroth@gmail.com' };
-
-    # In the test environment, the UserController class will have received
-    # The InMemory user repository.
-    my $user_controller = MyApp::UserController->new;
+	# In the test environment, the UserController class will have received
+	# The InMemory user repository.
+	my $user_controller = $container->get_service 'MyApp::UserController'
 
 When the container doesn't find a service in a given environment, it will fall back to the default environment. If it
 doesn't find a service there, it will throw an exception.
