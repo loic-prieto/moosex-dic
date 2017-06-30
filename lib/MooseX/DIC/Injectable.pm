@@ -1,4 +1,4 @@
-package Injectable;
+package MooseX::DIC::Injectable;
 
 use MooseX::DIC::Types;
 use aliased 'MooseX::DIC::Container::ServiceMetaInformation';
@@ -13,15 +13,17 @@ parameter qualifiers => ( isa => 'ArrayRef[Str]', default => sub { [] });
 
 role {
     my $p = shift;
-
-    method _moosex_dic_meta => sub {
-        return ServiceMetaInformation->new(
+    
+	# Inject in the package metadata the mooseX metadata
+	__PACKAGE__->meta->add_method( get_service_metadata => sub {
+		return ServiceMetaInformation->new(
             scope => $p->scope,
             environment => $p->environment,
-            qualifiers => $p->qualifiers,
-            implements => $p->implements
+	        qualifiers => $p->qualifiers,
+	        implements => $p->implements
         );
-    };
+	});
+
 };
 
 1;

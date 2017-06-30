@@ -1,6 +1,6 @@
 package Types;
 
-use Moose::Util::Constraints;
+use Moose::Util::TypeConstraints;
 
 role_type Injectable => { role => 'MooseX::DIC::Injectable'};
 

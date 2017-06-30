@@ -5,12 +5,12 @@ use List::Util 'reduce';
 use aliased 'MooseX::DIC::PackageIsNotServiceException';
 use aliased 'MooseX::DIC::FunctionalityNotImplementedException';
 use aliased 'MooseX::DIC::ContainerConfigurationException';
-use aliased 'MooseX::DIC::Container::UnregisteredServiceException';
+use aliased 'MooseX::DIC::UnregisteredServiceException';
 
 use Moose;
 with 'MooseX::DIC::Container';
 
-has singletons => ( is => 'ro', isa => 'HashRef[Injectable]', defaul => sub { {} } );
+has singletons => ( is => 'ro', isa => 'HashRef[Injectable]', default => sub { {} } );
 has services => ( is => 'ro', isa => 'HashRef[MooseX::DIC::Container::ServiceMetaInformation]', default => sub {{}});
 
 sub get_service {
@@ -18,7 +18,7 @@ sub get_service {
 
     # Check it is a registered service
     my $service_meta = $self->services->{$package_name};
-    UnregisteredServiceException->throw unless $service_meta;
+    UnregisteredServiceException->throw( service => $package_name) unless $service_meta;
 
     my $service;
 
@@ -38,7 +38,7 @@ sub get_service {
 
 sub register_service {
     my ($self,$package_name) = @_;
-
+	
     # Check the package is an Injectable class
     my $injectable_role =
         reduce { $a }
@@ -47,7 +47,9 @@ sub register_service {
     PackageIsNotServiceException->throw unless defined $injectable_role;
     
     # Get the meta information from the injectable role
-    my $meta = $injectable_role->get_method('_moosex_dic_meta')->execute;
+    my $meta = $package_name->meta->get_service_metadata;
+    ContainerConfigurationException->throw(message=>"The package $package_name is not propertly configured for injection")
+	    unless $meta;
 
     # Build the implements info if it doesn't exist
     unless($meta->has_implements){

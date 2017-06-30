@@ -1,7 +1,8 @@
 package MooseX::DIC::ServiceCreationException;
 
 use Moose;
-with 'Throwable';
+use namespace::autoclean;
+extends 'MooseX::DIC::ContainerException';
 
-has message => ( is => 'ro', isa => 'Str', required => 1);
+__PACKAGE__->meta->make_immutable;
 1;

@@ -1,4 +1,23 @@
-	package MooseX::DIC;
+package MooseX::DIC;
+
+use aliased 'MooseX::DIC::Container::DefaultImpl';
+use MooseX::DIC::Scanner::FolderScanner 'fetch_injectable_packages_from_path';
+
+require Exporter;
+@ISA = qw/Exporter/;
+@EXPORT_OK = qw/build_container/;
+
+sub build_container {
+	my %options = @_;
+	my $container = DefaultImpl->new;
+	
+	my @injectable_packages = fetch_injectable_packages_from_path($options{scan_path});
+	foreach my $injectable_package (@injectable_packages) {
+		$container->register_service($injectable_package);
+	}
+	
+	return $container;
+}
 
 1;
 

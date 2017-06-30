@@ -3,6 +3,8 @@ package MooseX::DIC::ServiceFactory::Moose;
 use Moose;
 with 'MooseX::DIC::ServiceFactory';
 
+use aliased 'MooseX::DIC::UnregisteredServiceException';
+
 has container => ( is => 'ro', does => 'MooseX::DIC::Container', required => 1);
 
 sub build_service {
@@ -18,7 +20,12 @@ sub build_service {
 			# This assumes that the attribute injected has a 'does'
 			# that is directly the name of an existing role.
 			my $service_type = $attribute->type_constraint->name;
+			
+			# The following assignemnt assumes that all possible services have
+			# been registered.
 			my $dependency = $self->container->get_service( $service_type );
+			UnregisteredServiceException->throw(service=>$service_type) unless $dependency;
+			
 			$dependencies{$attribute->name} = $dependency;
 		}
 	}

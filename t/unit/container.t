@@ -9,25 +9,25 @@ use lib "$FindBin::RealBin/../../lib";
 use lib "$FindBin::RealBin/container/lib";
 
 use Test::Spec;
-use MooseX::DIC qw/start_container get_service/;
+use MooseX::DIC qw/build_container/;
 
 describe 'A Moose DI container' => sub {
+	
+	my $container;
 
 	describe ',given a fixed scanpath' => sub {
 
-		before each => sub {
-			start_container( 
-				libpath => [ "$FindBin::RealBin/container/lib" ]
-			);
+		before all => sub {
+			$container = build_container( scan_path => "$FindBin::RealBin/container/lib");
 		};
 
 		it 'should have registered a service' => sub {
-			my $service = get_service 'Test1';
+			my $service = $container->get_service('Test1');
 			ok(defined($service));
 		};
 
 		it 'should return a correct implementation for a service' => sub {
-			my $test_service = get_service 'Test1';
+			my $test_service = $container->get_service('Test1');
 			is(ref $test_service,'Test1Impl');
 		};
 
