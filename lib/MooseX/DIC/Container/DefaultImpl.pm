@@ -2,6 +2,7 @@ package MooseX::DIC::Container::DefaultImpl;
 
 use MooseX::DIC::Types;
 use List::Util 'reduce';
+use Module::Load 'load';
 use aliased 'MooseX::DIC::PackageIsNotServiceException';
 use aliased 'MooseX::DIC::FunctionalityNotImplementedException';
 use aliased 'MooseX::DIC::ContainerConfigurationException';
@@ -38,6 +39,9 @@ sub get_service {
 
 sub register_service {
     my ($self,$package_name) = @_;
+
+    # Make sure the the package is loaded
+    load $package_name;
 	
     # Check the package is an Injectable class
     my $injectable_role =

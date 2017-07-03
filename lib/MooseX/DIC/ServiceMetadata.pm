@@ -1,4 +1,4 @@
-package ServiceMetadata;
+package MooseX::DIC::ServiceMetadata;
 
 use MooseX::DIC::Types;
 

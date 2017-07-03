@@ -1,4 +1,4 @@
-package Types;
+package MooseX::DIC::Types;
 
 use Moose::Util::TypeConstraints;
 

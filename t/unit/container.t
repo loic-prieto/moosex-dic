@@ -11,11 +11,11 @@ use lib "$FindBin::RealBin/container/lib";
 use Test::Spec;
 use MooseX::DIC qw/build_container/;
 
-describe 'A Moose DI container' => sub {
-	
+describe 'A Moose DI container,' => sub {
+
 	my $container;
 
-	describe ',given a fixed scanpath' => sub {
+	describe 'given a fixed scanpath,' => sub {
 
 		before all => sub {
 			$container = build_container( scan_path => "$FindBin::RealBin/container/lib");

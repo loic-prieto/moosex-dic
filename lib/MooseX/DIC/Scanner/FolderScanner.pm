@@ -9,16 +9,22 @@ require Exporter;
 
 sub fetch_injectable_packages_from_path {
 	my $path = shift;
-	
+
 	my @injectable_packages = ();
 	find( sub {
+    my $file_name = $File::Find::name;
 		push @injectable_packages, extract_package_name_from_filename($file_name)
 			if is_injectable($file_name);
 	}, $path);
+
+  return @injectable_packages;
 }
 
 sub is_injectable {
 	my $file_name = shift;
+
+  # Must be a file
+  return 0 unless -f $file_name;
 	
 	# Must be a perl module
 	return 0 if index($file_name,'.pm') == -1;
@@ -35,7 +41,6 @@ sub extract_package_name_from_filename {
 	my $file_name = shift;
 	
 	my $package_name;
-	
 	my $file_content = read_file($file_name, err_mode => 'quiet');
 	if($file_content) {
 		$file_content =~ /package\ +([a-zA-Z0-9]+)/;
