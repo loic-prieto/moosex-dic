@@ -1,7 +1,7 @@
 package MooseX::DIC::Injectable;
 
 use MooseX::DIC::Types;
-use aliased 'MooseX::DIC::Container::ServiceMetaInformation';
+use aliased 'MooseX::DIC::ServiceMetadata';
 
 use MooseX::Role::Parameterized;
 
@@ -12,17 +12,19 @@ parameter implements => ( isa => 'Str', predicate => 'has_implements' );
 parameter qualifiers => ( isa => 'ArrayRef[Str]', default => sub { [] });
 
 role {
-    my $p = shift;
-    
-	# Inject in the package metadata the mooseX metadata
-	__PACKAGE__->meta->add_method( get_service_metadata => sub {
-		return ServiceMetaInformation->new(
-            scope => $p->scope,
-            environment => $p->environment,
-	        qualifiers => $p->qualifiers,
-	        implements => $p->implements
-        );
-	});
+  my ($p,%args) = @_;
+
+  # Inject in the package metadata the mooseX metadata
+  $args{consumer}->add_method( get_service_metadata => sub {
+      return ServiceMetadata->new(
+        class_name => $args{consumer}->{package},
+        scope => $p->scope,
+        environment => $p->environment,
+        qualifiers => $p->qualifiers,
+        implements => $p->implements,
+        builder => 'Moose'
+      );
+    });
 
 };
 

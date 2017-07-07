@@ -7,12 +7,14 @@ use aliased 'MooseX::DIC::PackageIsNotServiceException';
 use aliased 'MooseX::DIC::FunctionalityNotImplementedException';
 use aliased 'MooseX::DIC::ContainerConfigurationException';
 use aliased 'MooseX::DIC::UnregisteredServiceException';
+use MooseX::DIC::ServiceFactoryFactory 'build_factory';
 
 use Moose;
 with 'MooseX::DIC::Container';
 
 has singletons => ( is => 'ro', isa => 'HashRef[Injectable]', default => sub { {} } );
 has services => ( is => 'ro', isa => 'HashRef[MooseX::DIC::Container::ServiceMetaInformation]', default => sub {{}});
+has service_factories => (is => 'ro', isa => 'HashRef[ServiceFactory]', default =>sub{{}} );
 
 sub get_service {
     my ($self,$package_name) = @_;
@@ -29,7 +31,11 @@ sub get_service {
     }
     return $service if $service;
 
-    $service = $service_meta->build($self);
+    # If the service hasn't been built yet, use the builder class to do it
+    my $service_factory = $self->get_service_factory($service_meta->builder);
+    $service = $service_factory->build_service($service_meta->class_name);
+
+    # Cache the service if it's a singleton
     if($service_meta->scope eq 'singleton') {
         $self->singletons->{$package_name} = $service;
     }
@@ -37,21 +43,33 @@ sub get_service {
     return $service;
 }
 
+sub get_service_factory {
+  my ($self,$factory_type) = @_;
+
+  my $service_factory = $self->service_factories->{$factory_type};
+  unless($service_factory) {
+    $service_factory = build_factory($factory_type,$self);
+    $self->service_factories->{$factory_type} = $service_factory;
+  }
+
+  return $service_factory;
+}
+
 sub register_service {
     my ($self,$package_name) = @_;
 
     # Make sure the the package is loaded
     load $package_name;
-	
+
     # Check the package is an Injectable class
     my $injectable_role =
         reduce { $a }
-        grep { ref $_ eq 'Injectable'}
+        grep { $_->{package} eq 'MooseX::DIC::Injectable' }
         $package_name->meta->calculate_all_roles_with_inheritance;
-    PackageIsNotServiceException->throw unless defined $injectable_role;
-    
+    PackageIsNotServiceException->throw( package => $package_name ) unless defined $injectable_role;
+
     # Get the meta information from the injectable role
-    my $meta = $package_name->meta->get_service_metadata;
+    my $meta = $package_name->get_service_metadata;
     ContainerConfigurationException->throw(message=>"The package $package_name is not propertly configured for injection")
 	    unless $meta;
 
@@ -69,7 +87,7 @@ sub register_service {
 
     # Associate the service meta information to the interface this service implements
     $self->services->{$meta->implements} = $meta;
-    
+
 }
 
 1;

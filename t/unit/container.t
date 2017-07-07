@@ -22,7 +22,7 @@ describe 'A Moose DI container,' => sub {
 		};
 
 		it 'should have registered a service' => sub {
-			my $service = $container->get_service('Test1');
+      my $service = $container->get_service('Test1');
 			ok(defined($service));
 		};
 

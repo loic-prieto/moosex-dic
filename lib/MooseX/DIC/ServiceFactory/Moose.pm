@@ -4,6 +4,7 @@ use Moose;
 with 'MooseX::DIC::ServiceFactory';
 
 use aliased 'MooseX::DIC::UnregisteredServiceException';
+use Try::Tiny;
 
 has container => ( is => 'ro', does => 'MooseX::DIC::Container', required => 1);
 
@@ -37,7 +38,7 @@ sub build_service {
 		MooseX::DIC::ServiceCreationException->throw( 
 			message => "Error while building an injected service: $_"
 		);
-	}
+	};
 
 	return $service;
 }
