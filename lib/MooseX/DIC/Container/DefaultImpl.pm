@@ -12,32 +12,38 @@ use MooseX::DIC::ServiceFactoryFactory 'build_factory';
 use Moose;
 with 'MooseX::DIC::Container';
 
-has singletons => ( is => 'ro', isa => 'HashRef[Injectable]', default => sub { {} } );
-has services => ( is => 'ro', isa => 'HashRef[MooseX::DIC::Container::ServiceMetaInformation]', default => sub {{}});
+use constant DEFAULT_ENVIRONMENT => 'default';
+
+has environment => ( is => 'ro', isa => 'Str', default => DEFAULT_ENVIRONMENT );
+has singletons => ( is => 'ro', isa => 'HashRef[HashRef[Injectable]]', default => sub { {default => {}} } );
+has services => ( is => 'ro', isa => 'HashRef[HashRef[MooseX::DIC::Container::ServiceMetaInformation]]', default => sub {{default=>{}}});
 has service_factories => (is => 'ro', isa => 'HashRef[ServiceFactory]', default =>sub{{}} );
 
 sub get_service {
     my ($self,$package_name) = @_;
 
     # Check it is a registered service
-    my $service_meta = $self->services->{$package_name};
-    UnregisteredServiceException->throw( service => $package_name) unless $service_meta;
+    my $meta = $self->services->{$self->environment}->{$package_name};
+	$meta = $self->services->{DEFAULT_ENVIRONMENT}->{$package_name} unless $meta;
+    UnregisteredServiceException->throw( service => $package_name) unless $meta;
 
     my $service;
 
     # If it is a singleton, there's a chance it has already been built
-    if($service_meta->scope eq 'singleton') {
-        $service = $self->singletons->{$package_name};
+    if($meta->scope eq 'singleton') {
+		# First retrieve it from the environment, then from default environment
+        $service = $self->singletons->{$meta->environment}->{$package_name};
+		$service = $self->singletons->{DEFAULT_ENVIRONMENT}->{$package_name} unless $service;
     }
     return $service if $service;
 
     # If the service hasn't been built yet, use the builder class to do it
-    my $service_factory = $self->get_service_factory($service_meta->builder);
-    $service = $service_factory->build_service($service_meta->class_name);
+    my $service_factory = $self->get_service_factory($meta->builder);
+    $service = $service_factory->build_service($meta->class_name);
 
     # Cache the service if it's a singleton
-    if($service_meta->scope eq 'singleton') {
-        $self->singletons->{$package_name} = $service;
+    if($meta->scope eq 'singleton') {
+        $self->singletons->{$meta->environment}->{$package_name} = $service;
     }
 
     return $service;
@@ -79,14 +85,14 @@ sub register_service {
     }
 
     # Until qualifiers are implemented, check the service has not already been
-    # registered for the implemented interface
-    if(exists $self->services->{$meta->implements}) {
+    # registered for the implemented interface for the given environment.
+    if(exists $self->services->{$meta->environment}->{$meta->implements}) {
         ContainerConfigurationException->throw(
             message => 'A service has already been declared for the Interface '.$meta->implements);
     }
 
     # Associate the service meta information to the interface this service implements
-    $self->services->{$meta->implements} = $meta;
+    $self->services->{$meta->environment}->{$meta->implements} = $meta;
 
 }
 

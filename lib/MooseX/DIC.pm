@@ -10,7 +10,10 @@ require Exporter;
 
 sub build_container {
 	my %options = @_;
-	my $container = DefaultImpl->new;
+	my $container = DefaultImpl->new(
+		(exists $options{environment}? $options{environment}:())	
+	);
+
 	my @injectable_packages = fetch_injectable_packages_from_path($options{scan_path});
 	foreach my $injectable_package (@injectable_packages) {
 		$container->register_service($injectable_package);

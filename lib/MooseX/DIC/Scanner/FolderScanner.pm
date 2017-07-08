@@ -15,7 +15,7 @@ sub fetch_injectable_packages_from_path {
 		my $file_name = $File::Find::name;
 		push @injectable_packages, extract_package_name_from_filename($file_name)
 			if is_injectable($file_name);
-	}, $path);
+	}, @$path);
 
 	return @injectable_packages;
 }

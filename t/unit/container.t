@@ -18,7 +18,7 @@ describe 'A Moose DI container,' => sub {
 	describe 'given a fixed scanpath,' => sub {
 
 		before all => sub {
-			$container = build_container( scan_path => "$FindBin::RealBin/container/lib");
+			$container = build_container( scan_path => ["$FindBin::RealBin/container/lib"] );
 		};
 
 		it 'should have registered a service' => sub {
