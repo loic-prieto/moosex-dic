@@ -22,13 +22,20 @@ describe 'A Moose DI container,' => sub {
 		};
 
 		it 'should have registered a service' => sub {
-      my $service = $container->get_service('Test1');
+			my $service = $container->get_service('Test1');
 			ok(defined($service));
 		};
 
 		it 'should return a correct implementation for a service' => sub {
 			my $test_service = $container->get_service('Test1');
 			is(ref $test_service,'Test1Impl');
+		};
+
+		it 'should have injected the test1 service into test2' => sub {
+			my $test2 = $container->get_service('Test2');
+			my $injected_test1 = $test2->dependency1;
+
+			ok(defined($injected_test1));
 		};
 
 	};

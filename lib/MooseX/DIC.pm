@@ -2,6 +2,7 @@ package MooseX::DIC;
 
 use aliased 'MooseX::DIC::Container::DefaultImpl';
 use MooseX::DIC::Scanner::FolderScanner 'fetch_injectable_packages_from_path';
+use MooseX::DIC::Injected; # We load this here to have the trait available further on.
 
 require Exporter;
 @ISA = qw/Exporter/;
