@@ -5,7 +5,6 @@ use aliased 'MooseX::DIC::ServiceMetadata';
 
 use MooseX::Role::Parameterized;
 
-
 parameter scope => ( isa => 'ServiceScope', default => 'singleton');
 parameter environment => ( isa => 'Str', default => 'default');
 parameter implements => ( isa => 'Str', predicate => 'has_implements' );
@@ -25,7 +24,6 @@ role {
         builder => 'Moose'
       );
     });
-
 };
 
 1;

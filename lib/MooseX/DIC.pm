@@ -11,7 +11,7 @@ require Exporter;
 sub build_container {
 	my %options = @_;
 	my $container = DefaultImpl->new(
-		(exists $options{environment}? $options{environment}:())	
+		(exists $options{environment}? (environment => $options{environment}):())	
 	);
 
 	my @injectable_packages = fetch_injectable_packages_from_path($options{scan_path});

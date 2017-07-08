@@ -7,7 +7,7 @@ use FindBin;
 use lib "$FindBin::RealBin/../../local/lib/perl5";
 use lib "$FindBin::RealBin/../../lib";
 use lib "$FindBin::RealBin/environments/lib/common";
-use lib "$FindBin::RealBin/environments/lib/prod";
+use lib "$FindBin::RealBin/environments/lib/pro";
 use lib "$FindBin::RealBin/environments/lib/test";
 
 use Test::Spec;
@@ -23,7 +23,7 @@ describe 'A Moose DI container,' => sub {
 			$container = build_container( 
 				scan_path => [
 					"$FindBin::RealBin/environments/lib/common",
-					"$FindBin::RealBin/environments/lib/prod",
+					"$FindBin::RealBin/environments/lib/pro",
 					"$FindBin::RealBin/environments/lib/test"
 				],
 				environment => 'test'
