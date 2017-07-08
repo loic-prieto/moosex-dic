@@ -106,36 +106,35 @@ syntactic sugar if you only use the Injected trait.
 
 =head1 Starting the Container
 
-When starting your application, the container must be launched to start it's scanning. All packages under the libpath
-will be scanned, which means all packages under the libpath will be loaded. Take this into account for the memory
-consumption of the program and the starting time delay. You can specify which folders to scan instead of the whole
-libpath, which should greatly reduce startup time if you have a lot of dependencies and you are only interested in
-injecting your classes.
+When starting your application, the container must be launched to start it's 
+scanning. You can tell the container which folders to scan in search of injectable
+services. 
+This operation is slow as it has to scan every file under the specified folders, 
+which means you will usually only use one container per application.
 
 To start the container:
 
-	#!/usr/bin/env perl
-	use strict;
-	use warning;
+  #!/usr/bin/env perl
+  use strict;
+  use warning;
 
-	use MooseX::DIC::Container;
-	use MyApp::Launcher;
-	
-	# This may take some seconds
-	my $container = MooseX::DIC::Container->new;
-	
-	# The app launcher is a fully injected service, with
-	# all dependencies provided by the container recursively.
-	my $app = $container->get_service 'MyApp::Launcher';
-	$app->start;
+  use MooseX::DIC 'build_container';
+  use MyApp::Launcher;
 
-	exit 0;
-	
-	1;
+  # This may take some time depending on your lib size
+  my $container = build_container( scan_path => [ 'lib' ] );
+
+  # The launcher is a fully injected service, with all dependencies
+  # provided by the container.
+  my $app = $container->get_service 'MyApp::Launcher';
+  $app->start;
+
+  exit 0;
+
 
 =head1 Advanced use cases
 
-=head2 Scopes
+=head2 Scopes (TBD)
 
 =head3 Service scope
 
@@ -245,7 +244,7 @@ It is a configuration error to ask for a singleton scoped service into a request
 container will generate an exception when it encounters this situation (in the spirit of detecting errors as soon as
 possible).
 
-=head2 Qualifiers
+=head2 Qualifiers (TBD)
 
 =head3 Qualifiers usage
 
