@@ -9,6 +9,7 @@ use lib "$FindBin::RealBin/../../lib";
 use lib "$FindBin::RealBin/scopes/lib";
 
 use Test::Spec;
+use Try::Tiny;
 use MooseX::DIC qw/build_container/;
 
 describe 'A Moose DI container,' => sub {
@@ -18,7 +19,7 @@ describe 'A Moose DI container,' => sub {
 	describe 'given a fixed scanpath,' => sub {
 
 		before all => sub {
-			$container = build_container( scan_path => ["$FindBin::RealBin/container/lib"] );
+			$container = build_container( scan_path => ["$FindBin::RealBin/scopes/lib"] );
 		};
 
 		it 'should provide a singleton scoped service' => sub {
@@ -35,19 +36,18 @@ describe 'A Moose DI container,' => sub {
 		};
 
 		it 'should make a request-injected service available' => sub {
-			my $service = $container->get_service('Test3');
-      my $dependecy1 = $service->dependecy1;
-      my $dependecy2 = $service->dependecy1;
+      try {
+        $DB::single=1;
+  			my $service = $container->get_service('Test3');
+        my $dependency1 = $service->dependency1;
+        my $dependency2 = $service->dependency1;
 
-			ok($dependency1 != $dependency2);
+  			ok($dependency1 != $dependency2);
+      } catch {
+        $DB::single=1;
+        diag($_);
+      };
 		};
-
-    it 'should die with config error if trying to request request-injected singleton-scoped object' => sub {
-      trap { $container->register('Test4'); }
-      my $exception = $trap->die;
-
-      is(ref $exception,'MooseX::DIC::ContainerConfigurationException');
-    };
 
 	};
 
