@@ -16,3 +16,12 @@ unit-test:
 PHONY += manual-test
 manual-test:
 	docker run --rm -ti -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) /bin/bash
+
+tidy-codebase:
+	@echo "Tidying lib files"
+	docker run --rm -ti -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) find lib -type f -name *.pm -exec perltidy -b -bext='/' {} \;
+	@echo "Tidying test files"
+	docker run --rm -ti -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) find lib -type f -name *.t -exec perltidy -b -bext='/' {} \;
+	@echo "Codebase tidied"
+
+PHONY: $(PHONY)
