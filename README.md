@@ -109,7 +109,7 @@ exit 0;
 
 # Advanced use cases
 
-## Scopes (TBD)
+## Scopes
 
 ### Service scope
 

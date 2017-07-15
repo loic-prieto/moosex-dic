@@ -140,7 +140,7 @@ To start the container:
 
 =head1 Advanced use cases
 
-=head2 Scopes (TBD)
+=head2 Scopes
 
 =head3 Service scope
 
