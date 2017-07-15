@@ -24,8 +24,8 @@ describe 'A Moose DI container,' => sub {
 
 		it 'should provide a singleton scoped service' => sub {
 			my $service = $container->get_service('Test1');
-      my $service2 = $container->get_service('Test1');
-		  ok($service == $service2);
+			my $service2 = $container->get_service('Test1');
+			ok($service == $service2);
 		};
 
 		it 'should provide a request scoped service' => sub {
@@ -36,17 +36,11 @@ describe 'A Moose DI container,' => sub {
 		};
 
 		it 'should make a request-injected service available' => sub {
-      try {
-        $DB::single=1;
-  			my $service = $container->get_service('Test3');
-        my $dependency1 = $service->dependency1;
-        my $dependency2 = $service->dependency1;
+			my $service = $container->get_service('Test3');
+			my $dependency1 = $service->dependency1;
+			my $dependency2 = $service->dependency1;
 
-  			ok($dependency1 != $dependency2);
-      } catch {
-        $DB::single=1;
-        diag($_);
-      };
+			ok($dependency1 != $dependency2);
 		};
 
 	};
