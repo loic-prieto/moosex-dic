@@ -29,8 +29,7 @@ sub build_service {
                     service => $service_type )
                     unless $dependency;
                 $dependencies{ $attribute->name } = $dependency;
-            }
-            elsif ( $attribute->scope eq 'request' ) {
+            } elsif ( $attribute->scope eq 'request' ) {
                 $attribute->remove_accessors;
                 $meta->add_method(
                     $attribute->name,
@@ -56,8 +55,7 @@ sub build_service {
                 # get used, though.
                 $dependencies{ $attribute->name }
                     = $self->container->get_service($service_type);
-            }
-            else {
+            } else {
                 ContainerConfigurationException->throw( message =>
                         "An injection point can only be of type 'object' or 'request'"
                 );
