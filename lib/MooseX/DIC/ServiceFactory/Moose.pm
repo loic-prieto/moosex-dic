@@ -30,6 +30,16 @@ sub build_service {
                     unless $dependency;
                 $dependencies{ $attribute->name } = $dependency;
             } elsif ( $attribute->scope eq 'request' ) {
+
+                # It is a configuration error to ask for a request-injection of
+                # a singleton object. It may indicate a misconception or a config
+                # typo.
+                my $service_meta
+                    = $self->container->get_service_meta($service_type);
+                ContainerConfigurationException->throw( message =>
+                        "A singleton-scoped service cannot be injected into a request-injected attribute"
+                ) if $service_meta->scope eq 'singleton';
+
                 $attribute->remove_accessors;
                 $meta->add_method(
                     $attribute->name,

@@ -43,7 +43,13 @@ describe 'A Moose DI container,' => sub {
 			ok($dependency1 != $dependency2);
 		};
 
+		it 'should die with config error if trying to request request-injected singleton-scoped object' => sub {
+			trap { $container->get_service('Test4'); };
+			my $exception = $trap->die;
+
+			is(ref $exception,'MooseX::DIC::ContainerConfigurationException');
 		};
+	};
 
 };
 

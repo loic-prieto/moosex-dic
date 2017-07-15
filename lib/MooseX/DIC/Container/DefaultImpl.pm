@@ -29,10 +29,7 @@ sub get_service {
     my ( $self, $package_name ) = @_;
 
     # Check it is a registered service
-    my $meta = $self->services->{ $self->environment }->{$package_name};
-    $meta = $self->services->{'default'}->{$package_name} unless $meta;
-    UnregisteredServiceException->throw( service => $package_name )
-        unless $meta;
+    my $meta = $self->get_service_meta($package_name);
 
     my $service;
 
@@ -56,6 +53,17 @@ sub get_service {
     }
 
     return $service;
+}
+
+sub get_service_meta {
+    my ( $self, $package_name ) = @_;
+
+    my $meta = $self->services->{ $self->environment }->{$package_name};
+    $meta = $self->services->{'default'}->{$package_name} unless $meta;
+    UnregisteredServiceException->throw( service => $package_name )
+        unless $meta;
+
+    return $meta;
 }
 
 sub get_service_factory {
