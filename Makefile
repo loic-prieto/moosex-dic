@@ -19,9 +19,9 @@ manual-test:
 
 tidy-codebase:
 	@echo "Tidying lib files"
-	docker run --rm -ti -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) find lib -type f -name *.pm -exec perltidy -b -bext='/' {} \;
+	@docker run --rm -ti -u "`id -u $(USER)`:`id -g $(USER)`" -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) find lib -type f -name *.pm -exec perltidy -b -bext='/' {} \;
 	@echo "Tidying test files"
-	docker run --rm -ti -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) find lib -type f -name *.t -exec perltidy -b -bext='/' {} \;
+	@docker run --rm -ti -u "`id -u $(USER)`:`id -g $(USER)`" -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) find lib -type f -name *.t -exec perltidy -b -bext='/' {} \;
 	@echo "Codebase tidied"
 
 PHONY: $(PHONY)
