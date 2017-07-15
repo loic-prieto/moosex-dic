@@ -9,7 +9,8 @@ use aliased 'MooseX::DIC::ContainerConfigurationException';
 use aliased 'MooseX::DIC::ServiceCreationException';
 use Try::Tiny;
 
-has container => ( is => 'ro', does => 'MooseX::DIC::Container', required => 1 );
+has container =>
+    ( is => 'ro', does => 'MooseX::DIC::Container', required => 1 );
 
 sub build_service {
     my ( $self, $service_meta ) = @_;
@@ -18,7 +19,7 @@ sub build_service {
     # the object
     my %dependencies = ();
 
-	my $class_meta = $service_meta->class_name->meta;
+    my $class_meta = $service_meta->class_name->meta;
 
     foreach my $attribute ( $class_meta->get_all_attributes ) {
         if ( $attribute->does('MooseX::DIC::Injected') ) {
@@ -35,7 +36,8 @@ sub build_service {
                 # It is a configuration error to ask for a request-injection of
                 # a singleton object. It may indicate a misconception or a config
                 # typo.
-                my $scope = $self->container->get_service_meta($service_type)->scope;
+                my $scope = $self->container->get_service_meta($service_type)
+                    ->scope;
                 ContainerConfigurationException->throw( message =>
                         "A singleton-scoped service cannot be injected into a request-injected attribute"
                 ) if $scope eq 'singleton';

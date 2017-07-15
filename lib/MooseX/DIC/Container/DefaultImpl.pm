@@ -45,7 +45,7 @@ sub get_service {
 
     # If the service hasn't been built yet, use the builder class to do it
     my $service_factory = $self->get_service_factory( $meta->builder );
-    $service = $service_factory->build_service( $meta );
+    $service = $service_factory->build_service($meta);
 
     # Cache the service if it's a singleton
     if ( $meta->scope eq 'singleton' ) {
