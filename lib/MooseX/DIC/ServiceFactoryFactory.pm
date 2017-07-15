@@ -15,7 +15,6 @@ sub build_factory {
         "MooseX::DIC::ServiceFactory::$factory_type"
             ->new( container => $container );
     };
-
     ContainerException->throw(
         message => "Could not build the service factory $factory_type: $@" )
         if $@;

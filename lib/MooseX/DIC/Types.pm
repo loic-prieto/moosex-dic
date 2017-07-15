@@ -7,5 +7,6 @@ role_type ServiceFactory => { role => 'MooseX::DIC::ServiceFactory' };
 
 enum ServiceScope   => [qw/request singleton/];
 enum InjectionScope => [qw/request object/];
+enum ServiceBuilder => [qw/Moose Factory/];
 
 1;

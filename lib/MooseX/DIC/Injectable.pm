@@ -7,11 +7,22 @@ use MooseX::Role::Parameterized;
 
 parameter scope       => ( isa => 'ServiceScope', default => 'singleton' );
 parameter environment => ( isa => 'Str',          default => 'default' );
-parameter implements => ( isa => 'Str', predicate => 'has_implements' );
-parameter qualifiers => ( isa => 'ArrayRef[Str]', default => sub { [] } );
+parameter implements  => ( isa => 'Str', predicate => 'has_implements' );
+parameter qualifiers  => ( isa => 'ArrayRef[Str]', default => sub { [] } );
+parameter builder     => ( isa => 'ServiceBuilder', default => 'Moose' );
 
 role {
     my ( $p, %args ) = @_;
+
+	# If this injectable is a factory, it must provide the build_service
+	# method so that the container can use it.
+	# The build_service will receive:
+	# - the service metadata object
+	# - the container
+	# - injection point metadata
+	if($p->builder eq 'Factory'){
+		requires 'build_service';
+	}
 
     # Inject in the package metadata the mooseX metadata
     $args{consumer}->add_method(
@@ -22,7 +33,7 @@ role {
                 environment => $p->environment,
                 qualifiers  => $p->qualifiers,
                 implements  => $p->implements,
-                builder     => 'Moose'
+                builder     => $p->builder
             );
         }
     );

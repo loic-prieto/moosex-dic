@@ -2,24 +2,25 @@ package MooseX::DIC::ServiceFactory::Moose;
 
 use Moose;
 with 'MooseX::DIC::ServiceFactory';
+use namespace::autoclean;
 
 use aliased 'MooseX::DIC::UnregisteredServiceException';
 use aliased 'MooseX::DIC::ContainerConfigurationException';
 use aliased 'MooseX::DIC::ServiceCreationException';
 use Try::Tiny;
 
-has container =>
-    ( is => 'ro', does => 'MooseX::DIC::Container', required => 1 );
+has container => ( is => 'ro', does => 'MooseX::DIC::Container', required => 1 );
 
 sub build_service {
-    my ( $self, $class_name ) = @_;
+    my ( $self, $service_meta ) = @_;
 
     # Build the to-be-injected dependencies of
     # the object
-    my $meta         = $class_name->meta;
     my %dependencies = ();
 
-    foreach my $attribute ( $meta->get_all_attributes ) {
+	my $class_meta = $service_meta->class_name->meta;
+
+    foreach my $attribute ( $class_meta->get_all_attributes ) {
         if ( $attribute->does('MooseX::DIC::Injected') ) {
             my $service_type = $attribute->type_constraint->name;
 
@@ -34,14 +35,13 @@ sub build_service {
                 # It is a configuration error to ask for a request-injection of
                 # a singleton object. It may indicate a misconception or a config
                 # typo.
-                my $service_meta
-                    = $self->container->get_service_meta($service_type);
+                my $scope = $self->container->get_service_meta($service_type)->scope;
                 ContainerConfigurationException->throw( message =>
                         "A singleton-scoped service cannot be injected into a request-injected attribute"
-                ) if $service_meta->scope eq 'singleton';
+                ) if $scope eq 'singleton';
 
                 $attribute->remove_accessors;
-                $meta->add_method(
+                $class_meta->add_method(
                     $attribute->name,
                     sub {
                         my ( $object, $value ) = @_;
@@ -75,7 +75,7 @@ sub build_service {
 
     my $service;
     try {
-        $service = $class_name->new(%dependencies);
+        $service = $service_meta->class_name->new(%dependencies);
     }
     catch {
         MooseX::DIC::ServiceCreationException->throw(
@@ -84,5 +84,7 @@ sub build_service {
 
     return $service;
 }
+
+__PACKAGE__->meta->make_immutable;
 
 1;
