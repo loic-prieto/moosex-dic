@@ -6,7 +6,7 @@ build-docker:
 
 PHONY += fetch-dependencies
 fetch-dependencies:
-	docker run --rm -ti -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) carton install
+	docker run --rm -ti -u "`id -u $(USER)`:`id -g $(USER)`" -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -e "HOME=/mnt/moosex-dic" -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) carton install
 
 PHONY += unit-test
 unit-test:
