@@ -43,7 +43,7 @@ describe 'A Moose DI container,' => sub {
 			ok($dependency1 != $dependency2);
 		};
 
-	};
+		};
 
 };
 
