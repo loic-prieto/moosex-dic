@@ -94,4 +94,5 @@ attributes declare to accept a role/interface.
 
 This way of declaring the dependencies of your service, in it's constructor,
 allows to test much more easily your classes, providing mocks and stubs when
-testing.
+testing and allowing the container to wire automatically the dependencies based
+on whether you're performing tests or running in production.

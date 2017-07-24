@@ -9,7 +9,7 @@ or [CDI](http://docs.oracle.com/javaee/6/tutorial/doc/gjbnr.html).
 The goal of this library is to provide an easy to use DI container without
 configuration files and with automatic wiring of dependencies via constructor
 by class type (ideally by Role/Interface) (although a file-based config file
-is available too for those that ).
+is available too for those that would prefer a clean codebase ).
 
 The configuration is performed by the use of
 [Marker roles](https://en.wikipedia.org/wiki/Marker_interface_pattern) and a
