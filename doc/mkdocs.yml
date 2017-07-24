@@ -1,6 +1,7 @@
-site_name: MooseX::DIC, the Enterprise Dependency Injection for Moose you never asked for
+site_name: 'MooseX::DIC, the Enterprise Dependency Injection for Moose you never asked for'
 pages:
   - Home: index.md
+  - 'Dependency Injection': di.md
   - 'The container':
     - Overview: container_index.md
     - 'Injection by type': container_injection.md
