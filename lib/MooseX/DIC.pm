@@ -1,5 +1,7 @@
 package MooseX::DIC;
 
+our $VERSION = '0.1.0';
+
 use aliased 'MooseX::DIC::Container::DefaultImpl';
 use MooseX::DIC::Scanner::FolderScanner 'fetch_injectable_packages_from_path';
 use MooseX::DIC::Injected
@@ -30,11 +32,13 @@ sub build_container {
 
 1;
 
-=head1 Name
+=encoding UTF-8
 
-MooseX::DIC
+=head1 NAME
 
-=head1 Description
+MooseX::DIC - A dependency injector container for Moose
+
+=head1 DESCRIPTION
 
 MooseX::DIC is a dependency injection container tailored to L<Moose>, living in a full OOP environment and greatly
 inspired by Java DIC frameworks like L<Spring|https://docs.spring.io/spring/docs/current/spring-framework-reference/html/beans.html>
@@ -56,7 +60,7 @@ course). The container will scan all configured paths to look for services to in
 There is a great amount of flexibility to account for testing environments, non-moose libraries, alternative
 implementations of services, etc, although none of it is needed for a simple usage.
 
-=head1 Synopsis
+=head1 SYNOPSIS
 
 A service is injectable if it consumes the Role L<MooseX::DIC::Injectable>, which is a parameterized role.
 
@@ -432,3 +436,30 @@ will depend on which environment we launch the container in, as in:
 
 When the container doesn't find a service in a given environment, it will fall back to the default environment. If it
 doesn't find a service there, it will throw an exception.
+
+=head1 AUTHOR
+
+    Loïc Prieto Dehennault
+    CPAN ID: LPRIETO
+    CAPSiDE
+    loic.prieto@capside.com
+
+=head1 SEE ALSO
+
+L<https://metacpan.org/pod/Moose>
+
+L<http://docs.oracle.com/javaee/6/tutorial/doc/giwhl.html>
+
+L<https://spring.io/>
+
+=head1 BUGS and SOURCE
+
+The source code is located here: L<https://github.com/loic-prieto/moosex-dic>
+
+Please report bugs to: L<https://github.com/loic-prieto/moosex-dic/issues>
+
+=head1 COPYRIGHT and LICENSE
+
+Copyright (c) 2017 by CAPSiDE
+
+This code is distributed under the Apache 2 License. The full text of the license can be found in the LICENSE file included with this module.

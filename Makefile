@@ -4,6 +4,9 @@ PHONY += build-docker
 build-docker:
 	docker build -t perl_carton:$(PERL_VERSION) .
 
+README.md:
+	docker run --rm -ti -u "`id -u $(USER)`:`id -g $(USER)`" -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) carton exec perl -MPod::Markdown -e 'Pod::Markdown->new->filter(@ARGV)' lib/MooseX/DIC.pm > README.md
+
 PHONY += fetch-dependencies
 fetch-dependencies:
 	docker run --rm -ti -u "`id -u $(USER)`:`id -g $(USER)`" -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -e "HOME=/mnt/moosex-dic" -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) carton install
@@ -23,5 +26,9 @@ tidy-codebase:
 	@echo "Tidying test files"
 	@docker run --rm -ti -u "`id -u $(USER)`:`id -g $(USER)`" -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) find lib -type f -name *.t -exec perltidy -b -bext='/' {} \;
 	@echo "Codebase tidied"
+
+dist: README.md
+	docker run --rm -ti -u "`id -u $(USER)`:`id -g $(USER)`" -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) carton exec dzil smoke
+	docker run --rm -ti -u "`id -u $(USER)`:`id -g $(USER)`" -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) carton exec dzil build
 
 PHONY: $(PHONY)
