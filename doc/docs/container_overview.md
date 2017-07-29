@@ -1,8 +1,8 @@
 # Overview
 
-MooseX::DIC is a dependency injection container tailored to
-[Moose](https://metacpan.org/pod/Moose), living in a full OOP environment and
-greatly inspired by Java DIC frameworks like
+MooseX::DIC is a [dependency injection container](https://en.wikipedia.org/wiki/Dependency_injection)
+tailored to [Moose](https://metacpan.org/pod/Moose), living in a full OOP
+environment and greatly inspired by Java DIC frameworks like
 [Spring](https://docs.spring.io/spring/docs/current/spring-framework-reference/html/beans.html)
 or [CDI](http://docs.oracle.com/javaee/6/tutorial/doc/gjbnr.html).
 
@@ -20,6 +20,9 @@ by the use of DIC roles and traits, it should work without a running container.
 The classes are fully functional without the dependency injection, the library
 is just a convenient way to wire dependencies (this is mainly accomplished by
 forbidding non [constructor injection](https://en.wikipedia.org/wiki/Dependency_injection#Constructor_injection)).
+
+An alternative configuration specification in YAML config files is provided
+to avoid tainting the business code with infrastructure code.
 
 This library is designed to be used on long-running processes where startup
 time is not a concern (within reason, of course). The container will scan all
