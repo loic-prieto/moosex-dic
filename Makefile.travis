@@ -1,7 +1,7 @@
 PHONY += install
 install:
 	cpanm Carton
-	pip install mkdocs
+	sudo pip install mkdocs
 	carton install --deployment
 
 PHONY += test
