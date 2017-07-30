@@ -7,8 +7,6 @@ branches:
 before_install: make -f Makefile.travis install
 script: make -f Makefile.travis test
 after_success: make -f Makefile.travis after_success
-deploy: 
-  - make -f Makefile.travis deploy-doc
 env:
   global:
   - AWS_DEFAULT_REGION=eu-west-1

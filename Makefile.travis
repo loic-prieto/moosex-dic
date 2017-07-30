@@ -12,9 +12,6 @@ test:
 PHONY += after_success
 after_success:
 	cd doc && mkdocs build --site-dir ../doc-site
-
-PHONY += deploy-doc
-deploy-doc:
 	aws s3 sync doc-site s3://docs.moosex-dic.org/
 
 PHONY: $(PHONY)
