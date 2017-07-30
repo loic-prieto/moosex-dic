@@ -3,3 +3,6 @@ dist: trusty
 branches:
   only:
     - master
+before_install: make -f Makefile.jenkins install
+script: make -f Makefile.jenkins test
+after_success: make -f Makefile.jenkins after_success
