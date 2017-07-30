@@ -1,18 +1,21 @@
-site_name: 'MooseX::DIC, the Enterprise Dependency Injection for Moose you never asked for'
+site_name: 'MooseX::DIC, Dependency Injection Container for Moose'
+dev_addr: 0.0.0.0:8000
+site_dir: /site
+theme: readthedocs
 pages:
   - Home: index.md
-  - 'Dependency Injection': di.md
+  #- 'Dependency Injection': di.md
   - 'The container':
-    - Overview: container_index.md
+    - Overview: container_overview.md
     - 'Injection by type': container_injection.md
     - 'Using the container': container_usage.md
-    - Configuration:
-      - Code: container_configuration_code.md
-      - 'Config file': container_configuration_file.md
-  - Scopes:
-    - 'Service scope': scopes_service.md
-    - 'Injection scope': scopes_injection.md
-  - Environments: environments.md
-  - 'Service factories': factories.md
-  - Qualifiers: qualifiers.md
+    #- Configuration:
+    #  - Code: container_configuration_code.md
+    #  - 'Config file': container_configuration_file.md
+    #- Scopes:
+    #- 'Service scope': scopes_service.md
+    #- 'Injection scope': scopes_injection.md
+    #- Environments: environments.md
+    #- 'Service factories': factories.md
+    #- Qualifiers: qualifiers.md
 

@@ -21,9 +21,6 @@ The classes are fully functional without the dependency injection, the library
 is just a convenient way to wire dependencies (this is mainly accomplished by
 forbidding non [constructor injection](https://en.wikipedia.org/wiki/Dependency_injection#Constructor_injection)).
 
-An alternative configuration specification in YAML config files is provided
-to avoid tainting the business code with infrastructure code.
-
 This library is designed to be used on long-running processes where startup
 time is not a concern (within reason, of course). The container will scan all
 configured paths to look for services to inject and classes that need

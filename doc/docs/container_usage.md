@@ -269,7 +269,7 @@ my $container = build_container( scan_path => [ '../lib' ] );
 
 my $server = MyApp::Server->new( container => $container );
 $server->add_route('GET','/accounts/{id}','MyApp::AccountController','get');
-$server->add_route('PUT','/accounts/{id},'MyApp::AccountController','update');
+$server->add_route('PUT','/accounts/{id}','MyApp::AccountController','update');
 
 $server->start;
 ```
@@ -390,7 +390,7 @@ my $container = build_container( ... );
 my $service = $container->get_service('MyApp::AccountService');
 ```
 
-#### Building a class and injecting it's dependencies.
+#### Building a class and injecting it's dependencies. (TBD)
 
 Instead of having the container retrieve an implementation of a service interface, we may only have an
 implementing class without interfaces. Not the ideal situation, but we may not want to go full enterprise
