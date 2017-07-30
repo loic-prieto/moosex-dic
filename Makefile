@@ -18,11 +18,16 @@ PHONY += unit-test
 unit-test:
 	docker run --rm -ti -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) prove t/unit
 
+PHONY += unit-test
+test:
+	prove t/unit
+
 # Log into the perl environment to test manually the library
-PHONY += manual-test
-manual-test:
+PHONY += shell
+shell:
 	docker run --rm -ti -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) /bin/bash
 
+PHONY += tidy-codebase
 tidy-codebase:
 	@echo "Tidying lib files"
 	@docker run --rm -ti -u $(USER_IDENTIFIER) -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) find lib -type f -name *.pm -exec perltidy -b -bext='/' {} \;
@@ -30,13 +35,10 @@ tidy-codebase:
 	@docker run --rm -ti -u $(USER_IDENTIFIER) -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) find lib -type f -name *.t -exec perltidy -b -bext='/' {} \;
 	@echo "Codebase tidied"
 
+PHONY += dist
 dist: README.md
 	docker run --rm -ti -u $(USER_IDENTIFIER) -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) carton exec dzil smoke
 	docker run --rm -ti -u $(USER_IDENTIFIER) -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) carton exec dzil build
-
-PHONY += build-doc
-build-doc: 
-	docker run --rm -ti --user $(USER_IDENTIFIER) -v $(CURDIR)/doc:/documents -v $(CURDIR):/tmp moird/mkdocs mkdocs build --site-dir /tmp/doc-site 
 
 PHONY += serve-doc
 serve-doc: 
