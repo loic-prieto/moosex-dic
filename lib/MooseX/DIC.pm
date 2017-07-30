@@ -40,6 +40,8 @@ MooseX::DIC - A dependency injector container for Moose
 
 =head1 DESCRIPTION
 
+Full documentation on the L<MooseX::DIC Webpage|http://docs.moosex-dic.org>.
+
 MooseX::DIC is a dependency injection container tailored to L<Moose>, living in a full OOP environment and greatly
 inspired by Java DIC frameworks like L<Spring|https://docs.spring.io/spring/docs/current/spring-framework-reference/html/beans.html>
 or L<CDI|http://docs.oracle.com/javaee/6/tutorial/doc/gjbnr.html>.
