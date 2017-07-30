@@ -1,0 +1,10 @@
+install:
+	cpanm Carton
+	pip install mkdocs
+	carton install --deployment
+
+test:
+	carton exec prove t/unit
+
+after_success:
+	cd doc && mkdocs build --site-dir ../doc-site
