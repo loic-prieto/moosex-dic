@@ -1,2 +1,2 @@
 language: perl
-dist: xenial
+dist: trusty
