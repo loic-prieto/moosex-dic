@@ -1,2 +1,5 @@
 language: perl
 dist: trusty
+branches:
+  only:
+    - master
