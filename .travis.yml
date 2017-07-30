@@ -1,5 +1,6 @@
 language: perl
 dist: trusty
+sudo: required
 branches:
   only:
     - master
