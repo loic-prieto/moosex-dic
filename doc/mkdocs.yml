@@ -4,7 +4,7 @@ site_dir: /site
 theme: readthedocs
 pages:
   - Home: index.md
-  #- 'Dependency Injection': di.md
+  - 'Dependency Injection': di.md
   - 'The container':
     - Overview: container_overview.md
     - 'Injection by type': container_injection.md
