@@ -9,8 +9,8 @@ pages:
     - Overview: container_overview.md
     - 'Injection by type': container_injection.md
     - 'Using the container': container_usage.md
-    #- Configuration:
-    #  - Code: container_configuration_code.md
+    - Configuration:
+      - Code: container_configuration_code.md
     #  - 'Config file': container_configuration_file.md
     #- Scopes:
     #- 'Service scope': scopes_service.md
