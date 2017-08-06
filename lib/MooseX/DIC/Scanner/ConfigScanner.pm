@@ -7,6 +7,14 @@ require Exporter;
 @ISA       = qw/Exporter/;
 @EXPORT_OK = qw/fetch_config_files_from_path/;
 
+sub fetch_config_from_path {
+	my $path = shift;
+
+	my @config_files = fetch_config_files_from_path($path);
+
+
+}
+
 sub fetch_config_files_from_path {
     my $path = shift;
 
@@ -14,13 +22,13 @@ sub fetch_config_files_from_path {
     find(
         sub {
             my $file_name = $File::Find::name;
-            push @injectable_packages, $file_name
+            push @config_files, $file_name
                 if is_config_file($file_name);
         },
         @$path
     );
 
-    return @injectable_packages;
+    return @config_files;
 }
 
 sub is_config_file {

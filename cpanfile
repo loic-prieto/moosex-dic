@@ -5,6 +5,7 @@ requires 'aliased';
 requires 'Try::Tiny';
 requires 'File::Find';
 requires 'File::Slurp';
+requires 'YAML::XS;
 
 on 'test' => sub {
     requires 'Test::Spec';

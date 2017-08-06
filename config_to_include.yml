@@ -1,0 +1,5 @@
+mappings:
+    MyApp::LoginService:
+        MyApp::LoginService::RDB:
+            qualifiers:
+                - RDB

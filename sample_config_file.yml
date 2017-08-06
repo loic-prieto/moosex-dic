@@ -1,0 +1,16 @@
+include:
+    - config_to_include.yml
+mappings:
+    MyApp::LoginService:
+        MyApp::LoginService::LDAP:
+            environment: default
+            qualifiers: 
+                - LDAP
+            scope: singleton
+            builder: Moose
+        MyApp::LoginService::InMemory:
+            environment: development
+    MyApp::LDAP:
+        MyApp::LDAPFactory:
+            scope: request
+            builder: Factory
