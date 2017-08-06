@@ -1,4 +1,4 @@
-package MooseX::DIC::Scanner::FolderScanner;
+package MooseX::DIC::Scanner::InjectableScanner;
 
 use File::Find;
 use File::Slurp;
