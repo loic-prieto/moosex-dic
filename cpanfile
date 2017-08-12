@@ -7,6 +7,7 @@ requires 'File::Find';
 requires 'File::Slurp';
 requires 'YAML::XS;
 requires 'Log::Log4perl';
+requires 'File::Spec';
 
 on 'test' => sub {
     requires 'Test::Spec';
