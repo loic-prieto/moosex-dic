@@ -2,9 +2,7 @@ package MooseX::DIC;
 
 our $VERSION = '0.1.0';
 
-use aliased 'MooseX::DIC::Container::DefaultImpl';
-use MooseX::DIC::Scanner::InjectableScanner 'fetch_injectable_packages_from_path';
-use MooseX::DIC::Scanner::ConfigScanner 'fetch_config_files_from_path';
+use MooseX::DIC::ContainerFactory;
 use MooseX::DIC::Injected
     ;    # We load this here to have the trait available further on.
 
@@ -18,22 +16,14 @@ sub build_container {
 	ContainerConfigurationException->throw(
 		message => 'scan_path is a mandatory parameter')
 		unless exists $options{scan_path};
+	$options{environment} = $options{environment} || 'default';
 
-    my $container = DefaultImpl->new(
-        (
-            exists $options{environment}
-            ? ( environment => $options{environment} )
-            : ()
-        )
-    );
+	my $container_factory = MooseX::DIC::ContainerFactory->new(
+		scan_path => $options{scan_path},
+		environment => $options{environment}
+	); 
 
-	# Scan code annotations
-
-	# Scan for config files
-	my @config_files = fetch_config_files_from_path( $options{scan_path} );
-
-
-    return $container;
+    return $container_factory->build_container;
 }
 
 1;

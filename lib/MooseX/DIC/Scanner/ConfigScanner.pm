@@ -7,14 +7,6 @@ require Exporter;
 @ISA       = qw/Exporter/;
 @EXPORT_OK = qw/fetch_config_files_from_path/;
 
-sub fetch_config_from_path {
-	my $path = shift;
-
-	my @config_files = fetch_config_files_from_path($path);
-
-
-}
-
 sub fetch_config_files_from_path {
     my $path = shift;
 
