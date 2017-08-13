@@ -4,14 +4,8 @@ use Moose;
 with 'MooseX::DIC::Loggable';
 
 use aliased 'MooseX::DIC::Container::DefaultImpl';
-use MooseX::DIC::Scanner::InjectableScanner 'fetch_injectable_packages_from_path';
-use MooseX::DIC::Scanner::ConfigScanner 'fetch_config_files_from_path';
-use List::Util 'reduce';
-use Module::Load 'load';
-use aliased 'MooseX::DIC::PackageIsNotServiceException';
-use aliased 'MooseX::DIC::FunctionalityNotImplementedException';
-use aliased 'MooseX::DIC::ContainerConfigurationException';
-use MooseX::DIC::YAMLConfigParser 'build_services_metadata_from_config_file';
+use aliased 'MooseX::DIC::Configuration::Code';
+use aliased 'MooseX::DIC::Configuration::YAML';
 
 has environment => (is => 'ro', isa => 'Str', default => 'default' );
 has scan_path => ( is => 'ro', isa => 'ArrayRef[Str]', required => 1 );
@@ -22,8 +16,8 @@ sub build_container {
 	# Build the registry
 	$self->logger->debug("Building the registry for the container...");
 	my $registry = MooseX::DIC::ServiceRegistry->new;
-	$self->_apply_code_config_to($registry);
-	$self->_apply_file_config_to($registry);
+	$self->_apply_config_to($registry);
+	$self->logger->debug($registry->services_count." services registered");
 	
 	# Build the container
 	my $container = DefaultImpl->new( environment => $self->environment, registry => $registry );
@@ -32,53 +26,20 @@ sub build_container {
 	return $container;
 }
 
-sub _apply_code_config_to {
+sub _apply_config_to {
 	my ($self,$registry) = @_;
 
-	my @injectable_packages = fetch_injectable_packages_from_path( $self->scan_path );
-	$self->logger->debug("Adding ".@injectable_packages." packages to the registry...");
+	my @config_readers = ( Code->new, YAML->new );
 
-	$registry->add_service_definition($_) foreach
-		map { $self->_get_meta_from_package($_) }
-		@injectable_packages;
-}
-
-sub _get_meta_from_package {
-	my ($self,$package_name) = @_;
-
-	# Make sure the the package is loaded
-	load $package_name;
-
-	# Check the package is an Injectable class
-	my $injectable_role = 
-		reduce {$a}
-		grep { $_->{package} eq 'MooseX::DIC::Injectable' }
-		$package_name->meta->calculate_all_roles_with_inheritance;
-	PackageIsNotServiceException->throw( package => $package_name )
-		unless defined $injectable_role;
-
-	# Get the meta information from the injectable role
-	my $meta = $package_name->get_service_metadata;
-	ContainerConfigurationException->throw( message =>
-		"The package $package_name is not propertly configured for injection"
-	) unless $meta;
-
-	# Build the implements info if it doesn't exist (TBD)
-	unless ( $meta->has_implements ) {
-		FunctionalityNotImplementedException->throw( message =>
-			'Injectable services must declare what interface they implement'
-		);
-	}	
-
-	return $meta;
-}
-
-sub _apply_file_config_to {
-	my ($self,$registry) = @_;
-
-	$registry->add_service_definition($_) foreach
-		map { build_services_metadata_from_config_file($_) }
-		fetch_config_files_from_path($self->scan_path);
+	my $paths = reduce { $a." ".$b } @{$self->scan_path};
+	$self->logger->debug("Fetching services from scanning inside $paths...");
+	foreach my $reader (@config_readers) {
+		my @services_metadata = $reader->get_services_metadata_from_path( $self->scan_path );
+		foreach my $service_metadata (@services_metadata) {
+			$registry->add_service_definition($service_metadata);
+			$self->logger->debug("Service ".$service_metadata->class_name." was registered for interface ".$service_metadata->implements);
+		}
+	}
 }
 
 1;

@@ -1,4 +1,4 @@
-package MooseX::DIC::Scanner::ConfigScanner;
+package MooseX::DIC::Configuration::Scanner::FileConfig;
 
 use File::Find;
 use File::Slurp;

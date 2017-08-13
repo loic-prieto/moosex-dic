@@ -12,11 +12,16 @@ use lib "$FindBin::RealBin/config/both";
 
 use Test::Spec;
 use Try::Tiny;
+use Log::Log4perl ':easy';
 use MooseX::DIC qw/build_container/;
 
 describe 'A Moose DI container,' => sub {
 
 	my $container;
+
+	before all => sub {
+		Log::Log4perl->easy_init($ERROR);	
+	};
 
 	describe 'that only gets its config from scanning code,' => sub {
 

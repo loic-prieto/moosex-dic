@@ -57,11 +57,15 @@ sub get_service_definition {
 	return $service_definition;
 }
 
-#### Auxiliary functions
-sub _build_env_index {
-	# There's always a default environment
-	return {
-		default => {}
-	};
+# () -> result:Int
+sub services_count {
+	my $count = 0;
+
+	while(my ($interface,$environments) = each( %{$self->metadata} )){
+		$count += keys %$environments; 
+	}
+
+	return $count;
 }
+
 1;

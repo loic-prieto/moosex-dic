@@ -9,7 +9,7 @@ use Moose;
 with 'MooseX::DIC::Container';
 
 has environment => ( is => 'ro', isa => 'Str', default => 'default' );
-has registry => (is => 'ro', isa => 'MooseX::DIC::ServiceRegistry', default => sub { ServiceRegistry->new; });
+has registry => (is => 'ro', isa => 'MooseX::DIC::ServiceRegistry', required => 1);
 has singletons => (is => 'ro', isa => 'HashRef[HashRef[Any]]', default => sub { { default => {} } });
 has service_factories => ( is => 'ro', isa => 'HashRef[ServiceFactory]', default => sub { {} } );
 
