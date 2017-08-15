@@ -15,7 +15,7 @@ sub build_factory {
 	try {
         load "MooseX::DIC::ServiceFactory::$factory_type";
 
-        "MooseX::DIC::ServiceFactory::$factory_type"
+        $service_factory = "MooseX::DIC::ServiceFactory::$factory_type"
             ->new( container => $container );
 
     } catch {

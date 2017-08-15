@@ -6,6 +6,7 @@ with 'MooseX::DIC::Loggable';
 use aliased 'MooseX::DIC::Container::DefaultImpl';
 use aliased 'MooseX::DIC::Configuration::Code';
 use aliased 'MooseX::DIC::Configuration::YAML';
+use List::Util 'reduce';
 
 has environment => (is => 'ro', isa => 'Str', default => 'default' );
 has scan_path => ( is => 'ro', isa => 'ArrayRef[Str]', required => 1 );

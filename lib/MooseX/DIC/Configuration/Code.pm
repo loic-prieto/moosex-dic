@@ -39,12 +39,5 @@ sub _get_meta_from_package {
 		"The package $package_name is not propertly configured for injection"
 	) unless $meta;
 
-	# Build the implements info if it doesn't exist (TBD)
-	unless ( $meta->has_implements ) {
-		FunctionalityNotImplementedException->throw( message =>
-			'Injectable services must declare what interface they implement'
-		);
-	}	
-
 	return $meta;
 }

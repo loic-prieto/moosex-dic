@@ -9,8 +9,8 @@ use constant DEFAULT_ENVIRONMENT => 'default';
 use constant DEFAULT_SCOPE => 'singleton';
 use constant DEFAULT_BUILDER => 'Moose';
 
-has class_name => ( is => 'ro', isa => 'ClassName', required => 1 );
-has implements => ( is => 'ro', isa => 'RoleName', required => 1 );
+has class_name => ( is => 'ro', isa => 'Str', required => 1 );
+has implements => ( is => 'ro', isa => 'Str', required => 1 );
 has scope      => ( is => 'ro', isa => 'ServiceScope', default => DEFAULT_SCOPE );
 has qualifiers => ( is => 'ro', isa => 'ArrayRef[Str]', default => sub { [] } );
 has environment => ( is => 'ro', isa => 'Str', default => DEFAULT_ENVIRONMENT );

@@ -49,7 +49,7 @@ describe 'A Moose DI container,' => sub {
 
   describe 'that only gets its config from a config file,' => sub {
     before all => sub {
-      $container = build_container( scan_path => [ "$FindBin::RealBin/config/only_code" ] );
+      $container = build_container( scan_path => [ "$FindBin::RealBin/config/only_file" ] );
     };
     
     it 'should have registered a service' => sub {

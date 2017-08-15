@@ -4,7 +4,8 @@ use Moose;
 with 'MooseX::DIC::Configuration';
 
 use YAML::XS;
-use File::Spec::Functions;
+use File::Spec::Functions qw/splitpath rel2abs/;
+use File::Slurp;
 use Try::Tiny;
 use MooseX::DIC::Configuration::Scanner::FileConfig 'fetch_config_files_from_path';
 use aliased 'MooseX::DIC::ContainerConfigurationException';
@@ -23,11 +24,12 @@ sub build_services_metadata_from_config_file {
 
 	ContainerConfigurationException->throw(message=>"Specified config file $config_file not found")
 		unless -f $config_file;
-
+	
 	# Parse YAML config file
 	my $raw_config;
 	try {
-		$raw_config = Load $config_file;
+		my $config_content = read_file($config_file);
+		$raw_config = Load $config_content;
 	} catch {
 		ContainerConfigurationException->throw(message=>"Error while loading config file $config_file: $_");
 	};
@@ -42,9 +44,9 @@ sub build_services_metadata_from_config_file {
 			my $service_metadata = ServiceMetadata->new(
 				class_name => $implementator,
 				implements => $interface,
-				(exists($definition->{scope})? (scope => $definition->{scope}):())
-				(exists($definition->{builder})? (builder => $definition->{builder}):())
-				(exists($definition->{environment})? (environment => $definition->{environment}):())
+				(exists($definition->{scope})? (scope => $definition->{scope}):()),
+				(exists($definition->{builder})? (builder => $definition->{builder}):()),
+				(exists($definition->{environment})? (environment => $definition->{environment}):()),
 				(exists($definition->{qualifiers})? (qualifiers => $definition->{qualifiers}):())
 			);
 
