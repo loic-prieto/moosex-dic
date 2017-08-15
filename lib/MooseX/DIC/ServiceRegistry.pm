@@ -6,6 +6,14 @@ with 'MooseX::DIC::Loggable';
 # InterfaceName -> EnvironmentName => ServiceMetadata
 has metadata => ( is => 'ro', isa => 'HashRef[HashRef[MooseX::DIC::ServiceMetadata]]', default => sub { {} } );
 
+
+# (interface_name: Str) -> Bool
+sub has_service {
+  my ($self,$interface_name) = @_;
+
+  return exists($self->metadata->{$interface_name});
+}
+
 # (:ServiceMetadata) -> Void
 sub add_service_definition {
 	my ($self,$service_metadata) = @_;

@@ -10,6 +10,7 @@ use Try::Tiny;
 use MooseX::DIC::Configuration::Scanner::FileConfig 'fetch_config_files_from_path';
 use aliased 'MooseX::DIC::ContainerConfigurationException';
 use aliased 'MooseX::DIC::ServiceMetadata';
+use Module::Load 'load';
 
 sub get_services_metadata_from_path {
 	my ($self,$paths) = @_;
@@ -40,18 +41,42 @@ sub build_services_metadata_from_config_file {
 
 	my @services_metadata = ();
 	while(my ($interface,$implementators) = each(%{$raw_config->{mappings}})) {
-		while( my ($implementator,$definition) = each(%$implementators)) {
-			my $service_metadata = ServiceMetadata->new(
-				class_name => $implementator,
-				implements => $interface,
-				(exists($definition->{scope})? (scope => $definition->{scope}):()),
-				(exists($definition->{builder})? (builder => $definition->{builder}):()),
-				(exists($definition->{environment})? (environment => $definition->{environment}):()),
-				(exists($definition->{qualifiers})? (qualifiers => $definition->{qualifiers}):())
-			);
 
+    #Make sure the interface package is loaded
+    load $interface;
+
+    # The config specs allows the implementators of an interface to be specified
+    # either as a string which defines a simple implementator with default values, 
+    # or as a hash of full implementators wich are key-value service metadata
+    # definitions.
+
+    if(ref($implementators) eq 'HASH') {
+      while( my ($implementator,$definition) = each(%$implementators)) {
+        
+        # Make sure the implementator package is loaded
+        load $implementator;
+
+        my $service_metadata = ServiceMetadata->new(
+          class_name => $implementator,
+          implements => $interface,
+          (exists($definition->{scope})? (scope => $definition->{scope}):()),
+          (exists($definition->{builder})? (builder => $definition->{builder}):()),
+          (exists($definition->{environment})? (environment => $definition->{environment}):()),
+          (exists($definition->{qualifiers})? (qualifiers => $definition->{qualifiers}):())
+        );
+        push @services_metadata, $service_metadata;
+      }
+		} else {
+      # Make sure the implementator package is loaded
+      load $implementators;
+
+      my $service_metadata = ServiceMetadata->new(
+				class_name => $implementators,
+				implements => $interface,
+			);
 			push @services_metadata, $service_metadata;
-		}
+    }
+		
 	}
 
 	# Load include files
