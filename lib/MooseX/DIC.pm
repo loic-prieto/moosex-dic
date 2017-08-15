@@ -2,8 +2,7 @@ package MooseX::DIC;
 
 our $VERSION = '0.1.0';
 
-use aliased 'MooseX::DIC::Container::DefaultImpl';
-use MooseX::DIC::Scanner::FolderScanner 'fetch_injectable_packages_from_path';
+use MooseX::DIC::ContainerFactory;
 use MooseX::DIC::Injected
     ;    # We load this here to have the trait available further on.
 
@@ -13,21 +12,18 @@ require Exporter;
 
 sub build_container {
     my %options   = @_;
-    my $container = DefaultImpl->new(
-        (
-            exists $options{environment}
-            ? ( environment => $options{environment} )
-            : ()
-        )
-    );
 
-    my @injectable_packages
-        = fetch_injectable_packages_from_path( $options{scan_path} );
-    foreach my $injectable_package (@injectable_packages) {
-        $container->register_service($injectable_package);
-    }
+	ContainerConfigurationException->throw(
+		message => 'scan_path is a mandatory parameter')
+		unless exists $options{scan_path};
+	$options{environment} = $options{environment} || 'default';
 
-    return $container;
+	my $container_factory = MooseX::DIC::ContainerFactory->new(
+		scan_path => $options{scan_path},
+		environment => $options{environment}
+	); 
+
+    return $container_factory->build_container;
 }
 
 1;

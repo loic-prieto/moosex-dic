@@ -18,9 +18,10 @@ PHONY += unit-test
 unit-test:
 	docker run --rm -ti -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) prove t/unit
 
+TEST ?= 't/unit/config.t'
 PHONY += unit-test
-test:
-	prove t/unit
+single-test:
+	docker run --rm -ti -v $(CURDIR):/mnt/moosex-dic perl_carton:$(PERL_VERSION) prove $(TEST)
 
 # Log into the perl environment to test manually the library
 PHONY += shell

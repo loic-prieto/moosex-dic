@@ -1696,6 +1696,65 @@ DISTRIBUTIONS
       overload 0
       strict 0
       warnings 0
+  Log-Log4perl-1.49
+    pathname: M/MS/MSCHILLI/Log-Log4perl-1.49.tar.gz
+    provides:
+      L4pResurrectable 0.01
+      Log::Log4perl 1.49
+      Log::Log4perl::Appender undef
+      Log::Log4perl::Appender::Buffer undef
+      Log::Log4perl::Appender::DBI undef
+      Log::Log4perl::Appender::File undef
+      Log::Log4perl::Appender::Limit undef
+      Log::Log4perl::Appender::RRDs undef
+      Log::Log4perl::Appender::Screen undef
+      Log::Log4perl::Appender::ScreenColoredLevels undef
+      Log::Log4perl::Appender::Socket undef
+      Log::Log4perl::Appender::String undef
+      Log::Log4perl::Appender::Synchronized undef
+      Log::Log4perl::Appender::TestArrayBuffer undef
+      Log::Log4perl::Appender::TestBuffer undef
+      Log::Log4perl::Appender::TestFileCreeper undef
+      Log::Log4perl::Catalyst undef
+      Log::Log4perl::Config undef
+      Log::Log4perl::Config::BaseConfigurator undef
+      Log::Log4perl::Config::DOMConfigurator 0.03
+      Log::Log4perl::Config::PropertyConfigurator undef
+      Log::Log4perl::Config::Watch undef
+      Log::Log4perl::DateFormat undef
+      Log::Log4perl::Filter undef
+      Log::Log4perl::Filter::Boolean undef
+      Log::Log4perl::Filter::LevelMatch undef
+      Log::Log4perl::Filter::LevelRange undef
+      Log::Log4perl::Filter::MDC undef
+      Log::Log4perl::Filter::StringMatch undef
+      Log::Log4perl::InternalDebug undef
+      Log::Log4perl::JavaMap undef
+      Log::Log4perl::JavaMap::ConsoleAppender undef
+      Log::Log4perl::JavaMap::FileAppender undef
+      Log::Log4perl::JavaMap::JDBCAppender undef
+      Log::Log4perl::JavaMap::NTEventLogAppender undef
+      Log::Log4perl::JavaMap::RollingFileAppender undef
+      Log::Log4perl::JavaMap::SyslogAppender undef
+      Log::Log4perl::JavaMap::TestBuffer undef
+      Log::Log4perl::Layout undef
+      Log::Log4perl::Layout::NoopLayout undef
+      Log::Log4perl::Layout::PatternLayout undef
+      Log::Log4perl::Layout::PatternLayout::Multiline undef
+      Log::Log4perl::Layout::SimpleLayout undef
+      Log::Log4perl::Level undef
+      Log::Log4perl::Logger undef
+      Log::Log4perl::MDC undef
+      Log::Log4perl::NDC undef
+      Log::Log4perl::Resurrector undef
+      Log::Log4perl::Util undef
+      Log::Log4perl::Util::Semaphore undef
+      Log::Log4perl::Util::TimeTracker undef
+    requirements:
+      ExtUtils::MakeMaker 0
+      File::Path 2.0606
+      File::Spec 0.82
+      Test::More 0.45
   Log-Message-0.08
     pathname: B/BI/BINGOS/Log-Message-0.08.tar.gz
     provides:
@@ -3507,6 +3566,15 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 0
       Fcntl 0
       URI 1.10
+      perl 5.008001
+  YAML-LibYAML-0.65
+    pathname: T/TI/TINITA/YAML-LibYAML-0.65.tar.gz
+    provides:
+      YAML::LibYAML 0.65
+      YAML::XS 0.65
+      YAML::XS::LibYAML undef
+    requirements:
+      ExtUtils::MakeMaker 0
       perl 5.008001
   YAML-Tiny-1.70
     pathname: E/ET/ETHER/YAML-Tiny-1.70.tar.gz
