@@ -48,7 +48,7 @@ sub get_service_definition {
 			$self->logger->trace("The implementation for $interface_name was found in the default environment") if defined($service_definition);
 		}
 
-		$self->logger->debug("An implementation for $interface name was requested, but none have been declared")
+		$self->logger->debug("An implementation for $interface_name name was requested, but none have been declared")
 			if(not(defined($service_definition)));
 	} else {
 		$self->logger->debug("An implementation for $interface_name was requested, but none have been declared");
@@ -59,6 +59,8 @@ sub get_service_definition {
 
 # () -> result:Int
 sub services_count {
+  my ($self) = @_;
+
 	my $count = 0;
 
 	while(my ($interface,$environments) = each( %{$self->metadata} )){
