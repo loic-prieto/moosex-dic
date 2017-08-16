@@ -8,6 +8,8 @@ requires 'File::Slurp';
 requires 'YAML::XS';
 requires 'Log::Log4perl';
 requires 'File::Spec';
+requires 'Module::Load';
+requires 'namespace::autoclean';
 
 on 'test' => sub {
     requires 'Test::Spec';
@@ -20,4 +22,3 @@ on 'develop' => sub {
     requires 'Dist::Zilla::PluginBundle::Git';
     requires 'Pod::Markdown';
 };
-
