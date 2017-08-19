@@ -42,11 +42,12 @@ MooseX::DIC is a dependency injection container tailored to L<Moose>, living in 
 inspired by Java DIC frameworks like L<Spring|https://docs.spring.io/spring/docs/current/spring-framework-reference/html/beans.html>
 or L<CDI|http://docs.oracle.com/javaee/6/tutorial/doc/gjbnr.html>.
 
-The goal of this library is to provide an easy to use DI container without configuration files and with automatic wiring
-of dependencies via constructor by class type (ideally by Role/Interface).
+The goal of this library is to provide an easy to use DI container with automatic wiring of dependencies via constructor 
+by class type (ideally by Role/Interface).
 
-The configuration is performed by the use of L<Marker roles|https://en.wikipedia.org/wiki/Marker_interface_pattern> and
-a specific trait on attributes that have to be injected.
+The configuration is performed either by the use of L<Marker roles|https://en.wikipedia.org/wiki/Marker_interface_pattern> and
+a specific trait on attributes that have to be injected, or by use of a very terse and composable yaml config file, using sensible
+defaults to cover 90% of the use cases to minimize boilerplate.
 
 One of the principal tenets of the library is that while code may be poluted by the use of DIC roles and traits, it
 should work without a running container. The classes are fully functional without the dependency injection, the library
@@ -74,17 +75,13 @@ A service is injectable if it consumes the Role L<MooseX::DIC::Injectable>, whic
 		scope       => 'singleton'
 	};
 
-	has ldap => (
-		is     => 'ro',
-		does   => 'LDAP',
-		traits => ['Injected']
-	);
+	has ldap => (is => 'ro', does => 'LDAP' );
 
 	1;
 
 We can see that this service is both an injectable service and consumes another injectable service,LDAP. We register a
 class as injectable into the container registry by consuming the L<MooseX::DIC::Injectable> role, and we get injected
-dependencies by using the L<Injected> trait.
+dependencies automatically if the container can find them.
 
 None of the parameters of the L<MooseX::DIC::Injectable> role are mandatory, they have defaults or can be inferred.
 On the example above, the role/interface the LDAPAuthService was implementing could be inferred from the
