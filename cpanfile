@@ -10,6 +10,7 @@ requires 'Log::Log4perl';
 requires 'File::Spec';
 requires 'Module::Load';
 requires 'namespace::autoclean';
+requires 'Exporter::Declare';
 
 on 'test' => sub {
     requires 'Test::Spec';

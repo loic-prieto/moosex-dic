@@ -1159,6 +1159,26 @@ DISTRIBUTIONS
       perl 5.008001
       strict 0
       warnings 0
+  Exporter-Declare-0.114
+    pathname: E/EX/EXODIST/Exporter-Declare-0.114.tar.gz
+    provides:
+      Exporter::Declare 0.114
+      Exporter::Declare::Export undef
+      Exporter::Declare::Export::Alias undef
+      Exporter::Declare::Export::Generator undef
+      Exporter::Declare::Export::Sub undef
+      Exporter::Declare::Export::Variable undef
+      Exporter::Declare::Meta undef
+      Exporter::Declare::Specs undef
+    requirements:
+      Carp 0
+      Fennec::Lite 0.004
+      Meta::Builder 0.003
+      Scalar::Util 0
+      Test::Exception 0.29
+      Test::Simple 0.88
+      aliased 0
+      perl v5.8.0
   Exporter-Tiny-1.000000
     pathname: T/TO/TOBYINK/Exporter-Tiny-1.000000.tar.gz
     provides:
@@ -1206,6 +1226,15 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
+  Fennec-Lite-0.004
+    pathname: E/EX/EXODIST/Fennec-Lite-0.004.tar.gz
+    provides:
+      Fennec::Lite 0.004
+    requirements:
+      List::Util 0
+      Test::Builder 0
+      Test::More 0
+      perl 5.006
   File-Copy-Recursive-0.38
     pathname: D/DM/DMUEY/File-Copy-Recursive-0.38.tar.gz
     provides:
@@ -1788,6 +1817,17 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 0
       perl 5.006
+  Meta-Builder-0.003
+    pathname: E/EX/EXODIST/Meta-Builder-0.003.tar.gz
+    provides:
+      Meta::Builder 0.003
+      Meta::Builder::Base undef
+      Meta::Builder::Util undef
+    requirements:
+      Carp 0
+      Fennec::Lite 0
+      Test::Exception 0
+      Test::More 0
   Mixin-Linewise-0.108
     pathname: R/RJ/RJBS/Mixin-Linewise-0.108.tar.gz
     provides:
