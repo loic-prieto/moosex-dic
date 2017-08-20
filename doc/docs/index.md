@@ -33,17 +33,15 @@ package MyApp::LDAPAuthService {
 
     has ldap => (
         is     => 'ro',
-        does   => 'LDAP',
-        traits => ['Injected']
+        does   => 'LDAP'
     );
 
 }
 
 package MyApp::LoginController {
     use Moose;
-    use Moosex::DIC;
 
-    has auth_service => ( is=>'ro', does => 'MyApp::AuthService', injected );
+    has auth_service => ( is=>'ro', does => 'MyApp::AuthService' );
 
     sub do_login {
         my ($self,$request) = @_;

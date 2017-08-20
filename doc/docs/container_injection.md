@@ -49,9 +49,9 @@ package MyApp::LDAPAuthService {
     };
 
     has ldap => (
-        is     => 'ro',
-        does   => 'LDAP',
-        traits => ['Injected']
+        is       => 'ro',
+        does     => 'LDAP',
+		required => 1
     );
 
     sub login {
@@ -63,7 +63,7 @@ package MyApp::LDAPAuthService {
 package MyApp::LoginController {
     use Moose;
 
-    has auth_service => ( is=>'ro', does => 'MyApp::AuthService', traits => [ 'Injected' ]);
+    has auth_service => ( is=>'ro', does => 'MyApp::AuthService');
 
     sub do_login {
         my ($self,$request) = @_;

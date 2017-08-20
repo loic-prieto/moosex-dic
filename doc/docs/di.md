@@ -128,7 +128,7 @@ It knows that the AuthService has a login method which accepts a user and a
 password and returns a boolean to tell if the credentials are valid. That's the
 contract of the AuthService, that AuthController expects.
 
-So...why no make that contract official?
+So...why not make that contract official?
 
 ```perl
 package AuthService {
@@ -449,7 +449,7 @@ package AuthService::DB {
 
     with 'MooseX::DIC::Injectable' => { implements => 'AuthService' };
 
-    has db => (is => 'ro', does => 'Database', required => 1, traits => [ 'Injected' ]);
+    has db => (is => 'ro', does => 'Database', required => 1);
 
     sub login {
         my ($self,$user,$password) = @_;
@@ -464,7 +464,7 @@ package AuthService::DB {
 package AuthController {
     use Moose;
 
-    has auth_service => (is => 'ro', does => 'AuthService', required => 1, traits => ['Injected'] );
+    has auth_service => (is => 'ro', does => 'AuthService', required => 1 );
 
     sub login { ... }
 }
@@ -478,7 +478,7 @@ with all of it's dependencies initialized:
 
 use MooseX::DIC 'build_container';
 
-my $container = build_container( scan_path => qw/lib/ );
+my $container = build_container( scan_path => [ qw/lib/ ] );
 my $controller = $container->get_service('AuthController');
 
 my $result = $controller->login(...);

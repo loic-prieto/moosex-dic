@@ -60,8 +60,7 @@ package MyApp::AuthService::LDAP {
 
     has ldap => (
         is     => 'ro',
-        does   => 'LDAP',
-        traits => ['Injected']
+        does   => 'LDAP'
     );
 
     sub login {
@@ -99,13 +98,28 @@ my $container = build_container( scan_path => [ qw(lib local/lib/perl5) ] );
 
 ### Initializing the container by reading a config file
 
-_This functionality is not yet implemented_
+Instead of scanning source folders for classes, and detecting injectable 
+services, we can create yaml config files for our mappings. When scanning
+for source folders, the container will process any file called _moosex-dic-wiring.yml_.
+
+These yaml files allow to define mappings between interfaces and implementation
+classes much like we've done with the marker Injectable role.
+
+Since it scans for these files inside the source folders, nothing changes about
+how you create a container:
+
+```perl
+my $container = build_container( scan_path => [ qw(lib local/lib/perl5) ] );
+```
+
+You can combine both configuration by config file and by code.
+
+There's a whole section to explain how to define mappings with a config file.
 
 ## Using the container
 
 Once a container has been initialized, either by scanning source folders or by
 reading from a config file, it can be used to requests services:
-
 
 ```perl
 my $auth = $container->get_service('MyApp::AuthService');
@@ -171,7 +185,7 @@ package MyApp::AccountService::RDB {
 
 	with 'MooseX::DIC::Injectable' => { implements  => 'MyApp::AccountService' };
 
-	has rdb => (is => 'ro', does => 'MyApp::RDB', traits => [ 'Injected' ] );
+	has rdb => (is => 'ro', does => 'MyApp::RDB' );
 
 	sub update_account {
 		my ($self,$account) = @_;
@@ -237,7 +251,7 @@ package MyApp::Server {
 package MyApp::AccountController {
 	use Moose;
 
-	has repository => (is => 'ro', does => 'MyApp::AccountService', traits => [ 'Injected' ]);
+	has repository => (is => 'ro', does => 'MyApp::AccountService');
 
 	sub get {
 		my ($self,$account_id) = @_;
@@ -325,7 +339,7 @@ package MyApp::AccountService::RDB {
 
 	with 'MooseX::DIC::Injectable' => { implements  => 'MyApp::AccountService' };
 
-	has rdb => (is => 'ro', does => 'MyApp::RDB', traits => [ 'Injected' ] );
+	has rdb => (is => 'ro', does => 'MyApp::RDB' );
 
 	sub update_account {
 		my ($self,$account) = @_;
@@ -353,7 +367,7 @@ We've seen the AccountController requesting it in an attribute:
 package MyApp::AccountController {
 	use Moose;
 
-	has repository => (is => 'ro', does => 'MyApp::AccountService', traits => [ 'Injected' ]);
+	has repository => (is => 'ro', does => 'MyApp::AccountService');
 
 	sub get {
 		my ($self,$account_id) = @_;
@@ -378,7 +392,7 @@ The AccountController declares AccountService as its dependency, and it receives
 The container will provide AccountController with an implementation of AccountService, AccountService::RDB.
 
 For a piece of code to get a service based on an interface, it either must call the `get_service` method of
-the container, or declare the service as a dependency in it's attribute with the Injected trait.
+the container, or declare the service as a dependency in it's attribute.
 
 ```perl
 #!/usr/bin/env perl
@@ -438,10 +452,11 @@ package MyApp::Server {
 }
 ```
 
-The container will inspect the attributes of the specified class and if any of them has the Injected
-trait, it will try to fetch the corresponding service for it.
-The container cannot inject any attribute that has not an Injected trait, which means that attributes
-that do not have default values and are required will raise an error while building the class.
+The container will inspect the attributes of the specified class and if it can find it's types
+in the service registry, it will inject them.
+The container cannot inject any attribute type that has not been registered, which means that 
+attributes that do not have default values and are required will raise an error while building
+the class.
 
 ```perl
 package MyApp::AccountService::MongoDB;
