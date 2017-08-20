@@ -1,4 +1,4 @@
-# Container configuration by Code
+# Container configuration by code
 
 There are two ways to configure the container in MooseX::DIC:
 
@@ -6,8 +6,6 @@ There are two ways to configure the container in MooseX::DIC:
 implementations of a service.
 - The second one involves creating a configuration file in YAML where the wiring
 between services and implementations are declared manually.
-
-## Configuration by Code
 
 When configuring wiring for the dependency injection, there is always an interface
 / Role that is to be implemented. It is the contract of the service. For example:
@@ -85,7 +83,7 @@ MooseX::DIC::Injectable parameterized role, which we will review shortly bellow.
 
 Each advanced use case will be explained in full in it's own section.
 
-### Environments
+## Environments
 
 By default, all mappings between services and implementing classes are linked to
 a 'default' environment. But more environments can exist, where different mappings
@@ -128,4 +126,164 @@ my $login_service = $container->get_service 'MyApp::LoginService';
 my $login_result = $login_service->login('test','test');
 ```
 
-### Scopes
+## Scopes
+
+There are two sets of scopes, closely related:
+
+- Service scopes
+- Injection scopes
+
+These scopes modify the lifecycle of a service when requested as a dependency.
+
+### Service scopes
+
+A service must have a scope. By default, the scope is 'singleton'. This means that the service and its
+dependencies are created only once inside the container and then reused each time. It's. in effect, a
+singleton service. Only stateless service classes are recommended to be singleton services, since having
+state would create race conditions on these kind of services.
+
+If a service is stateful, then it is of type 'request', meaning that a service of that type is built each
+time it is requested. This can be useful for services that need to hold state to work, and that can operate
+in a session-like manner, or services that need specific parameters to work per request and wouldn't make 
+sense configured in a global manner for the whole application.
+
+```perl
+package MyApp::LoginService::RDB;
+
+use Moose;
+with 'MyApp::LoginService';
+
+# The scope configuration here is redundant, since this is
+# the default value.
+with 'MooseX::DIC::Injectable' => { scope => 'singleton', qualifiers => [ 'db' ] };
+
+has db => ( is=>'ro', does => 'MyApp::DB', required => 1 );
+
+sub do_login { ... }
+```
+
+```perl
+package MyApp::LoginService::LDAP;
+
+use Moose;
+with 'MyApp::HTTPClient';
+
+with 'MooseX::DIC::Injectable' => { scope => 'singleton', qualifiers => [ 'ldap' ] };
+
+has ldap => ( is=>'ro', does => 'LDAP', required => 1 );
+
+sub do_login { ... }
+```
+
+Given these two service definitions, the MyApp::LoginService::RDB will be created only
+once in the container and served each time it is requested. For example:
+
+```perl
+package MyApp::LoginController;
+
+use Moose;
+use MooseX::DIC;
+
+# The login service will be created only once, and that same instance is injected here
+has login_service => ( is=>'ro', does => 'MyApp::LoginService', qualifiers => [ 'db' ], injected );
+
+sub login {
+	$self->login_service->do_login(...);
+}
+
+```
+
+As for the LDAP service, imagining that the LDAP service somewhow has to keep state that is not
+transferable between different consumers, we would use it much the same:
+
+```perl
+package MyApp::LoginController;
+
+use Moose;
+use MooseX::DIC;
+
+# The ldap login service will be created every time it is injected
+has login_service => ( is=>'ro', does => 'MyApp::LoginService', qualifiers => [ 'ldap' ], injected );
+
+sub login {
+	$self->login_service->do_login(...);
+}
+
+```
+
+The consumer won't know, nor does it care, the difference.
+
+### Injection scopes
+
+A consumer can declare a dependency to be injected in two ways:
+
+- once (object)
+- every time it is called (request)
+
+What this means is that when the container injects the service as a dependency of the consumer, it will
+do so either one time, while building that service, or every time the consumer calls the accessor of the
+dependency.
+
+The latter only makes sense for services that are request scoped, since otherwise the container would
+always inject the same object anyways. Indeed, requesting that a singleton object be request-injected is
+a configuration error that will raise an exception.
+
+Examples:
+```perl
+package MyApp::LoginService::REST;
+
+use Moose;
+with 'MyApp::LoginService';
+
+# This service is singleton scoped, the default
+with 'MooseX::DIC::Injectable';
+
+sub do_login { ... }
+
+
+package MyApp::LoginController;
+
+use Moose;
+use MooseX::DIC;
+
+# The injection scope configuration is redundant here, because it is the default
+has login_service => ( is=>'ro', does=>'MyApp::LoginService', scope => 'object', injected );
+
+sub login { ... }
+```
+
+```perl
+package MyApp::HTTPClient::LWP;
+
+use Moose;
+with 'MyApp::HTTPClient';
+
+with 'MooseX::DIC::Injectable' => { scope => 'request' };
+
+sub post { ... }
+
+
+package MyApp::LoginController;
+
+use Moose;
+
+has http_client => ( is=>'ro', does=>'MyApp::HTTPClient', scope => 'request', injected );
+
+sub login {
+	
+	# A new MyApp::HTTPClient::LWP is built here
+	$self->http_client->post(...);
+
+	# And here too
+	$self->http_client->post(...);
+
+	my $http1 = $self->http_client;
+	my $http2 = $self->http_client;
+
+	# $http1 != $http2
+}
+```
+
+## Qualifiers (TBD)
+
+Qualifiers are a feature that has to be implemented yet.
