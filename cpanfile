@@ -19,7 +19,7 @@ on 'test' => sub {
 on 'develop' => sub {
     requires 'Dist::Zilla';
     requires 'Dist::Zilla::Plugin::Prereqs::FromCPANfile';
-    requires 'Dist::Zilla::Plugin::VersionFromModule';
+    requires 'Dist::Zilla::Plugin::VersionFromMainModule';
     requires 'Dist::Zilla::PluginBundle::Git';
     requires 'Pod::Markdown';
 };
