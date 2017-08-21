@@ -4,7 +4,7 @@ requires 'Throwable';
 requires 'aliased';
 requires 'Try::Tiny';
 requires 'File::Find';
-requires 'File::Slurp';
+requires 'File::Slurper';
 requires 'YAML::XS';
 requires 'Log::Log4perl';
 requires 'File::Spec';
