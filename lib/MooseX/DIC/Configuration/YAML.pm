@@ -5,7 +5,7 @@ with 'MooseX::DIC::Configuration';
 
 use YAML::XS;
 use File::Spec::Functions qw/splitpath rel2abs/;
-use File::Slurp;
+use File::Slurper 'read_binary';
 use Try::Tiny;
 use MooseX::DIC::Configuration::Scanner::FileConfig 'fetch_config_files_from_path';
 use aliased 'MooseX::DIC::ContainerConfigurationException';
@@ -30,7 +30,7 @@ sub build_services_metadata_from_config_file {
   # Parse YAML config file
   my $raw_config;
   try {
-    my $config_content = read_file($config_file);
+    my $config_content = read_binary($config_file);
     $raw_config = Load $config_content;
   } catch {
     ContainerConfigurationException->throw(message=>"Error while loading config file $config_file: $_");
