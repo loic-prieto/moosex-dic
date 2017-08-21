@@ -1010,6 +1010,23 @@ DISTRIBUTIONS
       utf8 0
       version 0
       warnings 0
+  Dist-Zilla-Plugin-ChangelogFromGit-0.016
+    pathname: R/RC/RCAPUTO/Dist-Zilla-Plugin-ChangelogFromGit-0.016.tar.gz
+    provides:
+      Dist::Zilla::Plugin::ChangelogFromGit 0.016
+    requirements:
+      DateTime 1.10
+      DateTime::Infinite 1.10
+      Dist::Zilla::File::InMemory 5.019
+      Dist::Zilla::Role::FileGatherer 5.019
+      ExtUtils::MakeMaker 6.30
+      Git::Repository::Log::Iterator 1.311
+      IPC::Cmd 0.92
+      Moose 2.1005
+      Moose::Autobox 0.15
+      Software::Release 0.03
+      Software::Release::Change 0.03
+      Text::Wrap 2009.0305
   Dist-Zilla-Plugin-Config-Git-0.92
     pathname: B/BB/BBYRD/Dist-Zilla-Plugin-Config-Git-0.92.tar.gz
     provides:
@@ -1087,6 +1104,18 @@ DISTRIBUTIONS
       Module::CPANfile 0.903
       Try::Tiny 0.1
       perl 5.008001
+  Dist-Zilla-Plugin-VersionFromMainModule-0.03
+    pathname: D/DR/DROLSKY/Dist-Zilla-Plugin-VersionFromMainModule-0.03.tar.gz
+    provides:
+      Dist::Zilla::Plugin::VersionFromMainModule 0.03
+    requirements:
+      Dist::Zilla::Role::VersionProvider 0
+      ExtUtils::MakeMaker 0
+      Module::Metadata 1.000005
+      Moose 0
+      namespace::autoclean 0
+      strict 0
+      warnings 0
   Dist-Zilla-Plugins-CJM-4.27
     pathname: C/CJ/CJM/Dist-Zilla-Plugins-CJM-4.27.tar.gz
     provides:
@@ -1345,6 +1374,20 @@ DISTRIBUTIONS
       Fcntl 0
       POSIX 0
       perl 5.004
+  File-Slurper-0.009
+    pathname: L/LE/LEONT/File-Slurper-0.009.tar.gz
+    provides:
+      File::Slurper 0.009
+    requirements:
+      Carp 0
+      Encode 0
+      Exporter 5.57
+      ExtUtils::MakeMaker 0
+      PerlIO::encoding 0
+      constant 0
+      perl 5.008
+      strict 0
+      warnings 0
   File-Which-1.21
     pathname: P/PL/PLICEASE/File-Which-1.21.tar.gz
     provides:
@@ -1400,6 +1443,57 @@ DISTRIBUTIONS
       Sub::Exporter 0.972
       Sub::Exporter::Util 0
       overload 0
+      strict 0
+      warnings 0
+  Git-Repository-1.320
+    pathname: B/BO/BOOK/Git-Repository-1.320.tar.gz
+    provides:
+      Git::Repository 1.320
+      Git::Repository::Command 1.320
+      Git::Repository::Plugin 1.320
+      Test::Git 1.320
+    requirements:
+      Carp 0
+      Cwd 0
+      Exporter 0
+      ExtUtils::MakeMaker 0
+      File::Spec 0
+      File::Spec::Functions 0
+      File::Temp 0
+      Git::Version::Compare 1.001
+      IO::Handle 0
+      Scalar::Util 0
+      System::Command 1.118
+      Test::Builder 0
+      namespace::clean 0
+      perl 5.006
+      strict 0
+      warnings 0
+  Git-Repository-Plugin-Log-1.314
+    pathname: B/BO/BOOK/Git-Repository-Plugin-Log-1.314.tar.gz
+    provides:
+      Git::Repository::Log 1.314
+      Git::Repository::Log::Iterator 1.314
+      Git::Repository::Plugin::Log 1.314
+    requirements:
+      Carp 0
+      ExtUtils::MakeMaker 0
+      Git::Repository 1.309
+      Git::Repository::Command 0
+      Git::Repository::Plugin 0
+      Scalar::Util 0
+      perl 5.006
+      strict 0
+      warnings 0
+  Git-Version-Compare-1.004
+    pathname: B/BO/BOOK/Git-Version-Compare-1.004.tar.gz
+    provides:
+      Git::Version::Compare 1.004
+    requirements:
+      Carp 0
+      Exporter 0
+      ExtUtils::MakeMaker 0
+      perl 5.006
       strict 0
       warnings 0
   Git-Wrapper-0.047
@@ -1587,6 +1681,19 @@ DISTRIBUTIONS
       Symbol 0
       strict 0
       warnings 0
+  IPC-Run-0.96
+    pathname: T/TO/TODDR/IPC-Run-0.96.tar.gz
+    provides:
+      IPC::Run 0.96
+      IPC::Run::Debug 0.96
+      IPC::Run::IO 0.96
+      IPC::Run::Timer 0.96
+      IPC::Run::Win32Helper 0.96
+      IPC::Run::Win32IO 0.96
+      IPC::Run::Win32Pump 0.96
+    requirements:
+      ExtUtils::MakeMaker 0
+      Test::More 0.47
   IPC-System-Simple-1.25
     pathname: P/PJ/PJF/IPC-System-Simple-1.25.tar.gz
     provides:
@@ -2402,6 +2509,43 @@ DISTRIBUTIONS
       parent 0.223
       strict 1.03
       warnings 1.03
+  Moose-Autobox-0.16
+    pathname: E/ET/ETHER/Moose-Autobox-0.16.tar.gz
+    provides:
+      Moose::Autobox 0.16
+      Moose::Autobox::Array 0.16
+      Moose::Autobox::Code 0.16
+      Moose::Autobox::Defined 0.16
+      Moose::Autobox::Hash 0.16
+      Moose::Autobox::Indexed 0.16
+      Moose::Autobox::Item 0.16
+      Moose::Autobox::List 0.16
+      Moose::Autobox::Number 0.16
+      Moose::Autobox::Ref 0.16
+      Moose::Autobox::Scalar 0.16
+      Moose::Autobox::String 0.16
+      Moose::Autobox::Undef 0.16
+      Moose::Autobox::Value 0.16
+    requirements:
+      Carp 0
+      Data::Dumper 0
+      List::MoreUtils 0.07
+      Module::Build::Tiny 0.034
+      Moose 0.42
+      Moose::Role 0
+      Moose::Util 0
+      Scalar::Util 0
+      Syntax::Keyword::Junction::All 0
+      Syntax::Keyword::Junction::Any 0
+      Syntax::Keyword::Junction::None 0
+      Syntax::Keyword::Junction::One 0
+      autobox 2.23
+      metaclass 0
+      namespace::autoclean 0
+      parent 0
+      perl 5.006
+      strict 0
+      warnings 0
   MooseX-Getopt-0.71
     pathname: E/ET/ETHER/MooseX-Getopt-0.71.tar.gz
     provides:
@@ -2986,6 +3130,14 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 0
       Test::More 0
       perl 5.006
+  Scope-Guard-0.21
+    pathname: C/CH/CHOCOLATE/Scope-Guard-0.21.tar.gz
+    provides:
+      Scope::Guard 0.21
+    requirements:
+      ExtUtils::MakeMaker 0
+      Test::More 0
+      perl 5.006001
   Software-License-0.103012
     pathname: R/RJ/RJBS/Software-License-0.103012.tar.gz
     provides:
@@ -3031,6 +3183,17 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
+  Software-Release-0.03
+    pathname: G/GP/GPHAT/Software-Release-0.03.tar.gz
+    provides:
+      Software::Release 0.03
+      Software::Release::Change 0.03
+    requirements:
+      DateTime 0
+      ExtUtils::MakeMaker 6.30
+      Moose 0
+      Test::More 0
+      strict 0
   Sort-Versions-1.62
     pathname: N/NE/NEILB/Sort-Versions-1.62.tar.gz
     provides:
@@ -3242,6 +3405,43 @@ DISTRIBUTIONS
     requirements:
       Carp 0
       ExtUtils::MakeMaker 6.17
+      constant 0
+      perl 5.006
+      strict 0
+      warnings 0
+  Syntax-Keyword-Junction-0.003008
+    pathname: F/FR/FREW/Syntax-Keyword-Junction-0.003008.tar.gz
+    provides:
+      Syntax::Feature::Junction 0.003008
+      Syntax::Keyword::Junction 0.003008
+      Syntax::Keyword::Junction::All 0.003008
+      Syntax::Keyword::Junction::Any 0.003008
+      Syntax::Keyword::Junction::Base 0.003008
+      Syntax::Keyword::Junction::None 0.003008
+      Syntax::Keyword::Junction::One 0.003008
+    requirements:
+      ExtUtils::MakeMaker 6.30
+      Sub::Exporter::Progressive 0.001006
+      parent 0
+      syntax 0
+  System-Command-1.118
+    pathname: B/BO/BOOK/System-Command-1.118.tar.gz
+    provides:
+      System::Command 1.118
+      System::Command::Reaper 1.118
+    requirements:
+      Carp 0
+      Cwd 0
+      Data::Dumper 0
+      ExtUtils::MakeMaker 0
+      Fcntl 0
+      IO::Handle 0
+      IO::Select 0
+      IPC::Run 0
+      List::Util 0
+      POSIX 0
+      Scalar::Util 0
+      Symbol 0
       constant 0
       perl 5.006
       strict 0
@@ -3641,6 +3841,15 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
+  autobox-2.85
+    pathname: C/CH/CHOCOLATE/autobox-2.85.tar.gz
+    provides:
+      autobox 2.85
+      autobox::universal undef
+    requirements:
+      ExtUtils::MakeMaker 0
+      Scope::Guard 0.21
+      perl 5.008000
   libwww-perl-6.26
     pathname: O/OA/OALDERS/libwww-perl-6.26.tar.gz
     provides:
@@ -3727,3 +3936,16 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 0
       Package::Stash 0.23
       perl 5.008001
+  syntax-0.004
+    pathname: P/PH/PHAYLON/syntax-0.004.tar.gz
+    provides:
+      syntax 0.004
+    requirements:
+      Carp 0
+      Data::OptList 0.104
+      ExtUtils::MakeMaker 6.30
+      FindBin 0
+      Test::More 0.94
+      namespace::clean 0
+      strict 0
+      warnings 0
