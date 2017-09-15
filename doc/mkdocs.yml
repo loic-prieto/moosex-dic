@@ -11,7 +11,7 @@ pages:
     - 'Using the container': container_usage.md
     - Configuration:
       - Code: container_configuration_code.md
-    #  - 'Config file': container_configuration_file.md
+      - 'Config file': container_configuration_yaml.md
     #- Scopes:
     #- 'Service scope': scopes_service.md
     #- 'Injection scope': scopes_injection.md
