@@ -12,10 +12,4 @@ pages:
     - Configuration:
       - Code: container_configuration_code.md
       - 'Config file': container_configuration_yaml.md
-    #- Scopes:
-    #- 'Service scope': scopes_service.md
-    #- 'Injection scope': scopes_injection.md
-    #- Environments: environments.md
-    #- 'Service factories': factories.md
-    #- Qualifiers: qualifiers.md
-
+  - 'Differences with other frameworks': differences.md        
