@@ -31,13 +31,16 @@ sub build_class {
   try {
     load $package_name;
   } catch {
-    $self->logger->debug("The instance could not be built for $package_name because the package
-                          could not be found");
+    $self->logger->debug("The instance could not be built for $package_name".
+      " because the package could not be found: $_");
     PackageNotFoundException->throw(package_name=>$package_name);
   };
 
+  ContainerException->throw(message => "The package $package_name is not a valid Moose class,"
+    ." it cannot be instantiated") unless $package_name->can('meta');
+
   my %dependencies = ();
-  foreach my $attribute (@{$package_name->can->get_all_attributes}){
+  foreach my $attribute ($package_name->meta->get_all_attributes){
     # We can only inject an attribute that defines a constraint
     if($attribute->type_constraint){
       my $service_type = $attribute->type_constraint->name;
@@ -61,7 +64,16 @@ sub build_class {
       }
     }
   }
-
+  
+  my $instance = 
+    try {  $package_name->new(%dependencies) }
+    catch {
+      my $error = "Could not create an instance for package $package_name via "
+        ."Moose constructor: $_";
+      $self->logger->error($error);
+      ContainerException->throw(message => $error);
+    };
+  
   return $package_name->new(%dependencies);
 }
 
