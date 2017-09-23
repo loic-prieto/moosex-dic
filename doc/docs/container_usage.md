@@ -404,7 +404,7 @@ my $container = build_container( ... );
 my $service = $container->get_service('MyApp::AccountService');
 ```
 
-#### Building a class and injecting it's dependencies. (TBD)
+#### Building a class and injecting it's dependencies.
 
 Instead of having the container retrieve an implementation of a service interface, we may only have an
 implementing class without interfaces. Not the ideal situation, but we may not want to go full enterprise
