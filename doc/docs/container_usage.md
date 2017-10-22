@@ -470,3 +470,23 @@ with 'MooseX::DIC::Injectable' => { implements => 'MyApp::AccountService' };
 # the mongodb instance since it's not a managed service in the registry.
 has mongodb => ( is => 'ro', isa => 'MongoDB', required => 1 );
 ```
+#### Fetching dependencies for a package
+
+Sometimes we need to fetch only the resolved dependencies for a given package name. For example
+to build an adapter of MooseX::DIC for a framework, where we can only hook into the service creation
+process.
+
+To that end, we can make use of the `get_package_dependencies` method of the container.
+
+```perl
+#!/usr/bin/env perl
+
+use MyApp::Service1;
+
+my $container = init_container;
+
+my $dependencies = $container->get_package_dependencies("MyApp::Service1");
+
+my $service = MyApp::Service1->new( %$dependencies );
+
+```
